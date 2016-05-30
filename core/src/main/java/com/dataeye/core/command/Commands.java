@@ -25,7 +25,7 @@ public class Commands {
 
     private Commands() {
 
-        for (final Class<?> clazz : GaClassUtils.scanPackage(Commands.class.getClassLoader(), "com.github.ompc.greys.core.command")) {
+        for (final Class<?> clazz : GaClassUtils.scanPackage(Commands.class.getClassLoader(), "com.dataeye.core.command")) {
             if (!Command.class.isAssignableFrom(clazz)
                     || Modifier.isAbstract(clazz.getModifiers())) {
                 continue;

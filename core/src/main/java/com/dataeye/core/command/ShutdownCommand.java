@@ -50,7 +50,7 @@ public class ShutdownCommand implements Command {
         // 从GreysClassLoader中加载Spy
         final Class<?> spyClassFromGreysClassLoader = loadSpyClassFromGreysClassLoader(
                 ShutdownCommand.class.getClassLoader(),
-                "com.github.ompc.greys.agent.Spy"
+                "com.dataeye.agent.Spy"
         );
         if (null != spyClassFromGreysClassLoader) {
 
@@ -65,7 +65,7 @@ public class ShutdownCommand implements Command {
      * 重置所有已经加载到JVM的Spy
      */
     private void cleanSpy() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        for (final Class<?> spyClass : reflectManager.searchClass(new ClassMatcher(new PatternMatcher(PatternMatcher.Strategy.WILDCARD, "com.github.ompc.greys.agent.Spy")))) {
+        for (final Class<?> spyClass : reflectManager.searchClass(new ClassMatcher(new PatternMatcher(PatternMatcher.Strategy.WILDCARD, "com.dataeye.agent.Spy")))) {
             final Method cleanMethod = spyClass.getMethod("clean");
             cleanMethod.invoke(null);
         }

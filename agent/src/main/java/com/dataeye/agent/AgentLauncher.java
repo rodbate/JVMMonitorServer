@@ -65,7 +65,7 @@ public class AgentLauncher {
             };
 
             // 获取各种Hook
-            final Class<?> adviceWeaverClass = classLoader.loadClass("com.github.ompc.greys.core.advisor.AdviceWeaver");
+            final Class<?> adviceWeaverClass = classLoader.loadClass("com.dataeye.core.advisor.AdviceWeaver");
 
             // 初始化全局间谍
             Spy.initForAgentLauncher(
@@ -126,10 +126,10 @@ public class AgentLauncher {
             final ClassLoader agentLoader = loadOrDefineClassLoader(agentJar);
 
             // Configure类定义
-            final Class<?> classOfConfigure = agentLoader.loadClass("com.github.ompc.greys.core.Configure");
+            final Class<?> classOfConfigure = agentLoader.loadClass("com.dataeye.core.Configure");
 
             // GaServer类定义
-            final Class<?> classOfGaServer = agentLoader.loadClass("com.github.ompc.greys.core.server.GaServer");
+            final Class<?> classOfGaServer = agentLoader.loadClass("com.dataeye.core.server.GaServer");
 
             // 反序列化成Configure类实例
             final Object objectOfConfigure = classOfConfigure.getMethod("toConfigure", String.class)

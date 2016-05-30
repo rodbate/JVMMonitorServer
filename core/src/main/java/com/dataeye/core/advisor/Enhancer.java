@@ -346,7 +346,7 @@ public class Enhancer implements ClassFileTransformer {
      * 原因很简单，因为Spy被派遣到对方的ClassLoader中去了
      */
     private static boolean isGreysClass(Class<?> clazz) {
-        return StringUtils.startsWith(clazz.getCanonicalName(), "com.github.ompc.greys.");
+        return StringUtils.startsWith(clazz.getCanonicalName(), "com.dataeye.");
     }
 
     private static Map<Class<?>, Matcher<AsmMethod>> toEnhanceMap(final PointCut pointCut) {

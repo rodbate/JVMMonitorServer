@@ -32,7 +32,7 @@ public class GaStringUtils {
     /**
      * Spy类名
      */
-    public static final String SPY_CLASSNAME = "com.github.ompc.greys.agent.Spy";
+    public static final String SPY_CLASSNAME = "com.dataeye.agent.Spy";
 
     /**
      * 解析状态
@@ -313,12 +313,12 @@ public class GaStringUtils {
 
         final int length = stackTraceElementArray.length;
 
-        // 1. 找到com.github.ompc.greys的最后一条记录
+        // 1. 找到com.dataeye的最后一条记录
         // 2. 从这台记录开始skip掉4条反射调用的element
         if (length > 0) {
             for (int index = length - 1; index >= 0; index--) {
                 final StackTraceElement element = stackTraceElementArray[index];
-                if (StringUtils.startsWith(element.getClassName(), "com.github.ompc.greys.")) {
+                if (StringUtils.startsWith(element.getClassName(), "com.dataeye.")) {
                     for (int step = 0; step < 4 && !elementStack.isEmpty(); step++) {
                         final StackTraceElement skipElement = elementStack.pop();
                         // JVM会对反射调用进行优化,最多4次,但有可能只有3次
