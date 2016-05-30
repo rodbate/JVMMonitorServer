@@ -1,0 +1,28 @@
+group 'JVMMonitorServer'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+
+}
+
+dependencies {
+
+}
+
+
+/*task fatJar(type: Jar) {
+    manifest {
+        attributes("Premain-Class" : "com.test.instrumention.MyAgent")
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}*/
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
