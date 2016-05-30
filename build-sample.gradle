@@ -9,7 +9,7 @@ targetCompatibility = 1.7
 repositories {
     mavenCentral()
     maven {
-        url 'http://maven.dev.dc:7000/nexus/content/repositories/dc-central'
+        url '{url}'
     }
 }
 
