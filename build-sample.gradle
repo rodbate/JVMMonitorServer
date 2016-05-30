@@ -16,7 +16,7 @@ repositories {
 dependencies {
     compile project(':agent')
     compile project(':core')
-    compile 'dc-central:dc-httpserver2:1.0.0-SNAPSHOT'
+    compile 'dc-central:dc-httpserver:1.0.0-SNAPSHOT'
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
