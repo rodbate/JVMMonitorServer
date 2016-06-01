@@ -26,7 +26,7 @@ public class ThanksCommand implements Command {
             @Override
             public void action(Session session, Instrumentation inst, Printer printer) throws Throwable {
 
-                printer.println(IOUtils.toString(getClass().getResourceAsStream("/com/github/ompc/greys/core/res/thanks.txt"))).finish();
+                printer.println(IOUtils.toString(getClass().getResourceAsStream("/com/dataeye/core/res/thanks.txt"))).finish();
 
             }
         };

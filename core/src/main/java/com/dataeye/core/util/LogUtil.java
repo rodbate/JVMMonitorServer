@@ -22,7 +22,7 @@ public class LogUtil {
         loggerContext.reset();
         try {
 
-            configurator.doConfigure(LogUtil.class.getResourceAsStream("/com/github/ompc/greys/core/res/greys-logback.xml"));
+            configurator.doConfigure(LogUtil.class.getResourceAsStream("/com/dataeye/core/res/greys-logback.xml"));
         } catch (JoranException e) {
             throw new RuntimeException("load logback config failed, you need restart greys", e);
         } finally {

@@ -82,7 +82,7 @@ public class JavaScriptCommand implements ScriptSupportCommand, Command {
         // 加载
         compilable.compile(
                 IOUtils.toString(
-                        GaStringUtils.class.getResourceAsStream("/com/github/ompc/greys/core/res/javascript/gblocking.js"),
+                        GaStringUtils.class.getResourceAsStream("/com/dataeye/core/res/javascript/gblocking.js"),
                         Charset.forName("UTF-8")
                 )
         ).eval();
@@ -96,7 +96,7 @@ public class JavaScriptCommand implements ScriptSupportCommand, Command {
         // 加载greys-module.js
         compilable.compile(
                 IOUtils.toString(
-                        GaStringUtils.class.getResourceAsStream("/com/github/ompc/greys/core/res/javascript/greys-module.js"),
+                        GaStringUtils.class.getResourceAsStream("/com/dataeye/core/res/javascript/greys-module.js"),
                         Charset.forName("UTF-8")
                 )
         ).eval();

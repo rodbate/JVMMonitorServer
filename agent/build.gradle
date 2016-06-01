@@ -33,6 +33,9 @@ gradle.projectsEvaluated {
     }
 }
 
+task copyJar(type : Copy) {
+
+}
 
 
 compileJava.options.encoding = 'UTF-8'

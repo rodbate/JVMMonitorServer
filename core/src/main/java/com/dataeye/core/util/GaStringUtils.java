@@ -167,8 +167,8 @@ public class GaStringUtils {
      * @throws IOException resource not found.
      */
     public static String getLogo() throws IOException {
-        final String logo = IOUtils.toString(GaStringUtils.class.getResourceAsStream("/com/github/ompc/greys/core/res/logo.txt"));
-        final String version = IOUtils.toString(GaStringUtils.class.getResourceAsStream("/com/github/ompc/greys/core/res/version"));
+        final String logo = IOUtils.toString(GaStringUtils.class.getResourceAsStream("/com/dataeye/core/res/logo.txt"));
+        final String version = IOUtils.toString(GaStringUtils.class.getResourceAsStream("/com/dataeye/core/res/version"));
 
         final char[] versionPrefixArray = "version:".toCharArray();
         final String[] versionArray = StringUtils.split(version, '.');
