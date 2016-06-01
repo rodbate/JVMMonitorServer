@@ -7,9 +7,7 @@ import com.xunlei.netty.httpserver.component.XLHttpRequest;
 import com.xunlei.netty.httpserver.component.XLHttpResponse;
 import org.springframework.stereotype.Controller;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 
 @Controller
@@ -19,7 +17,7 @@ public class Help extends BaseCmd{
     public Object help(XLHttpRequest request, XLHttpResponse response) throws IOException {
         String pid = request.getParameter("pid");
 
-        String command = "D:\\Java\\jdk1.7.0_79\\bin\\java -Xbootclasspath/a:D:\\Java\\jdk1.7.0_79\\lib\\tools.jar -jar  " +
+        String command = "cmd.exe /c D:\\Java\\jdk1.7.0_79\\bin\\java -Xbootclasspath/a:D:\\Java\\jdk1.7.0_79\\lib\\tools.jar -jar  " +
                 "E:\\MyProjects\\JVMMonitorServer\\core\\build\\libs\\core-1.0.jar -target 127.0.0.1:3658 " +
                 "-core E:\\MyProjects\\JVMMonitorServer\\core\\build\\libs\\core-1.0.jar -agent " +
                 "E:\\MyProjects\\JVMMonitorServer\\agent\\build\\libs\\agent-1.0.jar -pid " + pid;
@@ -30,15 +28,15 @@ public class Help extends BaseCmd{
         InputStream in = socket.getInputStream();
         OutputStream os = socket.getOutputStream();
 
-        os.write("help \r\n".getBytes());
+        os.write("help\n".getBytes());
         os.close();
-        byte[] b = new byte[1024];
-        int len = 0;
+        //byte[] b = new byte[1024];
+        int b;
         StringBuilder sb = new StringBuilder();
-        while ((len = in.read(b)) > 0) {
-            sb.append(new String(b, 0, len));
+        while ((b = in.read()) != 0x04) {
+            sb.append(b);
         }
-        in.close();
+
         return sb.toString();
     }
 
@@ -46,28 +44,34 @@ public class Help extends BaseCmd{
         String command = "cmd.exe /c D:\\Java\\jdk1.7.0_79\\bin\\java -Xbootclasspath/a:D:\\Java\\jdk1.7.0_79\\lib\\tools.jar -jar  " +
                 "E:\\MyProjects\\JVMMonitorServer\\core\\build\\libs\\core-1.0.jar -target 127.0.0.1:3658 " +
                 "-core E:\\MyProjects\\JVMMonitorServer\\core\\build\\libs\\core-1.0.jar -agent " +
-                "E:\\MyProjects\\JVMMonitorServer\\agent\\build\\libs\\agent-1.0.jar -pid 3504";
+                "E:\\MyProjects\\JVMMonitorServer\\agent\\build\\libs\\agent-1.0.jar -pid 6782";
 
-        Process process = ProcessUtil.process(command);
-        //process.waitFor();
-        Socket socket = SimpleClient.connect(3658);
+        Process process = ProcessUtil.process("cmd.exe /c jps -m -l");
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        while ((line = br.readLine()) != null) {
+            System.out.println(line);
+        }
+
+
+        /*Socket socket = SimpleClient.connect(3658);
         InputStream in = socket.getInputStream();
         OutputStream os = socket.getOutputStream();
 
-        os.write("help".getBytes());
+        os.write("help\n".getBytes());
         os.flush();
 
-        byte[] b = new byte[1024];
-        int len;
+        char b;
         StringBuilder sb = new StringBuilder();
-        while ((len = in.read(b)) > 0) {
-            sb.append(new String(b, 0, len));
+        while ((b = (char) in.read()) != 0x04) {
+            sb.append(b);
         }
 
         os.close();
         in.close();
 
         socket.close();
-        System.out.println(sb.toString());
+        System.out.println(sb.toString());*/
     }
 }
