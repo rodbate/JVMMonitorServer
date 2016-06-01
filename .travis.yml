@@ -8,3 +8,4 @@ branches:
 
 before_install: 'gradle -version'
 install: 'gradle build'
+script: 'gradle check'
