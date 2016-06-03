@@ -36,7 +36,7 @@ public class ServerMgr {
     private Set<Integer> portAvailable = new ConcurrentHashSet<>(25);
 
     //正在使用的端口
-    private List<Integer> portInUsing = new ArrayList<>();
+    private Set<Integer> portInUsing = new ConcurrentHashSet<>();
 
     private Runnable runnable = new Runnable() {
         @Override
@@ -60,8 +60,12 @@ public class ServerMgr {
     private void increment(){
         //默认添加5个
         if (portAvailable.size() == 0) {
-            Collections.sort(portInUsing);
-            int maxPort = portInUsing.get(portInUsing.size() - 1);
+            List<Integer> list = new ArrayList<>();
+            for (int port : portInUsing) {
+                list.add(port);
+            }
+            Collections.sort(list);
+            int maxPort = list.get(list.size() - 1);
             for (int i = maxPort; i < maxPort + 5; i++) {
                 portAvailable.add(i);
             }
@@ -93,11 +97,11 @@ public class ServerMgr {
         this.portAvailable = portAvailable;
     }
 
-    public List<Integer> getPortInUsing() {
+    public Set<Integer> getPortInUsing() {
         return portInUsing;
     }
 
-    public void setPortInUsing(List<Integer> portInUsing) {
+    public void setPortInUsing(Set<Integer> portInUsing) {
         this.portInUsing = portInUsing;
     }
 

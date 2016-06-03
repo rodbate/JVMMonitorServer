@@ -30,7 +30,7 @@ public class Server {
         args = buildArgs();
     }
 
-    public synchronized void start(){
+    public void start(){
         try {
             Server server = mgr.getServerByPid(pid);
             if (server == null) {
@@ -47,7 +47,7 @@ public class Server {
         }
     }
 
-    public synchronized void stop(){
+    public void stop(){
         // TODO: 2016/6/2  client send 'shutdown' command
         Client client = new Client(this);
         String response = client.sendCmd("shutdown");
