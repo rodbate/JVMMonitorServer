@@ -2,11 +2,17 @@ package com.dataeye.common;
 
 
 import com.xunlei.util.concurrent.ConcurrentHashSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+
+
 public class ServerMgr {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(ServerMgr.class);
 
     private static ServerMgr instance;
 
@@ -27,7 +33,7 @@ public class ServerMgr {
     }
 
     //服务器空闲时间(idle)
-    private final long DURATION_TIME = 5 * 60 * 1000;
+    private final long DURATION_TIME = 1 * 30 * 1000;
 
     //进程id与启动的server一一对应
     private Map<Integer, Server> serverPool = new ConcurrentHashMap<>();
@@ -42,15 +48,22 @@ public class ServerMgr {
         @Override
         public void run() {
             // TODO: 2016/6/2 轮询服务器池中server是否过期
-            while (true) {
+            while (serverPool.size() > 0) {
                 Set<Integer> keys = serverPool.keySet();
                 for (int key : keys) {
                     Server server = serverPool.get(key);
+                    LOGGER.info(server.getPid() + " " + server.getPort());
                     long lastRequest =server.getLastRequest();
                     long now = System.currentTimeMillis();
                     if ((now - lastRequest) > DURATION_TIME) {
                         server.stop();
                     }
+                }
+
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
 

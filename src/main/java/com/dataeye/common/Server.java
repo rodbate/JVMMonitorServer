@@ -33,14 +33,27 @@ public class Server {
     public void start(){
         try {
             Server server = mgr.getServerByPid(pid);
+
             if (server == null) {
-                new GreysLauncher(args);
+                new Thread("GaServer Thread") {
+                    @Override
+                    public void run() {
+                        try {
+                            new GreysLauncher(args);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
                 mgr.getServerPool().put(pid, this);
+                System.out.println(pid);
                 mgr.getPortInUsing().add(port);
                 mgr.getPortAvailable().remove(port);
                 lastRequest = System.currentTimeMillis();
             } else {
                 port = server.getPort();
+                LOGGER.info("" + server.getPid());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,7 +74,12 @@ public class Server {
         // TODO: 2016/6/3 构造参数
         String core = (String) ResourceLoad.getValue("jvmserver.properties", "corePath");
         String agent = (String) ResourceLoad.getValue("jvmserver.properties", "agentPath");
-        return null;
+        String[] args = new String[4];
+        args[0] = "-p" + pid;
+        args[1] = "-t127.0.0.1:" + port;
+        args[2] = "-c" + core;
+        args[3] = "-a"+agent;
+        return args;
     }
 
     public long getLastRequest() {
