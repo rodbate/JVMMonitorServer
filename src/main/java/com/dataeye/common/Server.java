@@ -44,13 +44,25 @@ public class Server {
                             e.printStackTrace();
                         }
                     }
-                };
+                }.start();
 
+                while (true) {
+                    try {
+                        Client client = new Client(this);
+                        String response = client.sendCmd("version");
+                        //LOGGER.info("response " + response);
+                        if (response != null) {
+                            break;
+                        }
+                    }catch (Exception e) {
+                        //ignore
+                    }
+                }
                 mgr.getServerPool().put(pid, this);
-                System.out.println(pid);
                 mgr.getPortInUsing().add(port);
                 mgr.getPortAvailable().remove(port);
                 lastRequest = System.currentTimeMillis();
+                //LOGGER.info("server pool size is {} ",mgr.getServerPool().size());
             } else {
                 port = server.getPort();
                 LOGGER.info("" + server.getPid());

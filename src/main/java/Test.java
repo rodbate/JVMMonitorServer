@@ -1,4 +1,6 @@
 import com.dataeye.ResourceLoad;
+import com.dataeye.common.Client;
+import com.dataeye.common.Server;
 import com.dataeye.common.ServerMgr;
 
 import java.util.ArrayList;
@@ -19,12 +21,11 @@ public class Test{
 
         ServerMgr mgr = ServerMgr.getInstance();
 
-        mgr.getPortAvailable();
-        int port = mgr.getPort();
-        System.out.println(port);
-        mgr.getPortAvailable().remove(port);
-
-        System.out.println(mgr.getPort());
-
+        Server server = new Server(7028);
+        System.out.println("port" + server.getPort());
+        server.start();
+        Client client = new Client(server);
+        String response = client.sendCmd("help");
+        System.out.println(response);
     }
 }

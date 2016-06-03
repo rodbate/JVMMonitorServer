@@ -40,20 +40,32 @@ public class Client {
         connect();
 
         String response = "";
-        command = command + "\n";
-        try {
-            out.write(command.getBytes("utf-8"));
-
-            char b;
-            StringBuilder sb = new StringBuilder();
-            while ((b = (char) in.read()) != 0x04) {
-                sb.append(b);
+        if ("shutdown".equals(command)) {
+            command = command + "\n";
+            try {
+                out.write(command.getBytes());
+                response = "server shut down now.......";
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                close();
             }
-            response = sb.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            close();
+        } else {
+            command = command + "\n";
+            try {
+                out.write(command.getBytes("utf-8"));
+
+                char b;
+                StringBuilder sb = new StringBuilder();
+                while ((b = (char) in.read()) != 0x04) {
+                    sb.append(b);
+                }
+                response = sb.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                close();
+            }
         }
         return response;
     }
