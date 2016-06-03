@@ -15,6 +15,7 @@ public class Launcher {
             @Override
             public void run() {
                 System.out.println("start ..............");
+                ResourceLoad.init();
             }
         }, "classpath:applicationContext.xml");
     }

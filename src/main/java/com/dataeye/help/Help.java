@@ -1,6 +1,7 @@
 package com.dataeye.help;
 
 
+import com.dataeye.ResourceLoad;
 import com.xunlei.netty.httpserver.cmd.BaseCmd;
 import com.xunlei.netty.httpserver.cmd.CmdMapper;
 import com.xunlei.netty.httpserver.component.XLHttpRequest;
@@ -38,6 +39,11 @@ public class Help extends BaseCmd{
         }
 
         return sb.toString();
+    }
+
+    @CmdMapper("/jvm/test")
+    public Object test(XLHttpRequest request, XLHttpResponse response) throws Exception{
+        return ResourceLoad.getValue("jvmserver.properties", "my");
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
