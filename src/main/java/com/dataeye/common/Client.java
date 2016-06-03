@@ -21,7 +21,9 @@ public class Client {
     }
 
     private void connect() {
+
         server.request();
+
         socket = new Socket();
         InetSocketAddress address = new InetSocketAddress(server.getPort());
         try {
@@ -34,6 +36,9 @@ public class Client {
     }
 
     public String sendCmd(String command){
+
+        connect();
+
         String response = "";
         command = command + "\n";
         try {
