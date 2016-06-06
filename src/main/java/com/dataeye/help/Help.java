@@ -44,7 +44,7 @@ public class Help extends BaseCmd{
 
     @CmdMapper("/jvm/test")
     public Object test(XLHttpRequest request, XLHttpResponse response) throws Exception{
-        return Constant.RESOURCE_LOAD.getValue("E:\\MyProjects\\conf\\jvmserver.properties", "corePath");
+        return Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator + "jvmserver.properties", "corePath");
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
