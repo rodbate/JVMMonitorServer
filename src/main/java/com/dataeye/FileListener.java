@@ -1,10 +1,12 @@
 package com.dataeye;
 
 
+import com.dataeye.common.CommonUtil;
 import com.dataeye.common.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ public class FileListener {
 
     private static ArrayList<FileUpdate> list = new ArrayList<>();
 
+    private static final String CONF_DIR = CommonUtil.getLastDirectory(Constant.USER_DIR) + File.separator + "conf";
 
     private static Runnable runnable = new Runnable() {
         @Override
@@ -25,8 +28,8 @@ public class FileListener {
 
             try {
                 WatchService watcher = FileSystems.getDefault().newWatchService();
-                LOGGER.info("config path {} " + Constant.INNER_CONFIG_DIR);
-                Path path = Paths.get(Constant.INNER_CONFIG_DIR);
+                LOGGER.info("config path {} " + CONF_DIR);
+                Path path = Paths.get(CONF_DIR);
                 path.register(watcher, ENTRY_CREATE, ENTRY_MODIFY, ENTRY_DELETE);
 
                 //
