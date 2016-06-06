@@ -51,9 +51,9 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
     public Object jvmCmds(XLHttpRequest req, XLHttpResponse rsp) {
         String cmd = req.getParameter("cmd");
         if (StringUtils.isEmpty(cmd)) {
-            cmd = "cmd.exe /c jps  -l";
+            cmd = "sh ~ jps  -l";
         } else {
-            cmd = "cmd.exe /c " + cmd;
+            cmd = "sh ~ " + cmd;
         }
         try {
             Process process = ProcessUtil.process(cmd);
