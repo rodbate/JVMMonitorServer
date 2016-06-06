@@ -2,7 +2,9 @@ package com.dataeye.help;
 
 
 import com.dataeye.ResourceLoad;
+import com.dataeye.common.Client;
 import com.dataeye.common.Constant;
+import com.dataeye.common.Server;
 import com.xunlei.netty.httpserver.cmd.BaseCmd;
 import com.xunlei.netty.httpserver.cmd.CmdMapper;
 import com.xunlei.netty.httpserver.component.XLHttpRequest;
@@ -15,31 +17,16 @@ import java.net.Socket;
 @Controller
 public class Help extends BaseCmd{
 
-    @CmdMapper("/JVM/help")
+    @CmdMapper("/jvm/help")
     public Object help(XLHttpRequest request, XLHttpResponse response) throws IOException {
         String pid = request.getParameter("pid");
+        String cmd = request.getParameter("cmd");
+        System.out.println("======== cmd =======" + cmd);
+        Server server = new Server(Integer.parseInt(pid));
+        server.start();
+        Client c = new Client(server);
 
-        String command = "cmd.exe /c D:\\Java\\jdk1.7.0_79\\bin\\java -Xbootclasspath/a:D:\\Java\\jdk1.7.0_79\\lib\\tools.jar -jar  " +
-                "E:\\MyProjects\\JVMMonitorServer\\core\\build\\libs\\core-1.0.jar -target 127.0.0.1:3658 " +
-                "-core E:\\MyProjects\\JVMMonitorServer\\core\\build\\libs\\core-1.0.jar -agent " +
-                "E:\\MyProjects\\JVMMonitorServer\\agent\\build\\libs\\agent-1.0.jar -pid " + pid;
-
-        ProcessUtil.process(command);
-
-        Socket socket = SimpleClient.connect(3658);
-        InputStream in = socket.getInputStream();
-        OutputStream os = socket.getOutputStream();
-
-        os.write("help\n".getBytes());
-        os.close();
-        //byte[] b = new byte[1024];
-        int b;
-        StringBuilder sb = new StringBuilder();
-        while ((b = in.read()) != 0x04) {
-            sb.append(b);
-        }
-
-        return sb.toString();
+        return c.sendCmd(cmd);
     }
 
     @CmdMapper("/jvm/test")

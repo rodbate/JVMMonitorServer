@@ -17,6 +17,7 @@ dependencies {
     compile project(':agent')
     compile project(':core')
     compile 'dc-central:dc-httpserver:1.0.0-SNAPSHOT'
+    compile files '%JAVA_HOME%\\lib\\tools.jar'
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
