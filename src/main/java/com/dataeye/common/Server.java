@@ -6,6 +6,8 @@ import com.dataeye.core.GreysLauncher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+
 public class Server {
 
     private final Logger LOGGER = LoggerFactory.getLogger(Server.class);
@@ -85,8 +87,8 @@ public class Server {
 
     private String[] buildArgs(){
         // TODO: 2016/6/3 构造参数
-        String core = (String) Constant.RESOURCE_LOAD.getValue("jvmserver.properties", "corePath");
-        String agent = (String) Constant.RESOURCE_LOAD.getValue("jvmserver.properties", "agentPath");
+        String core = (String) Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator + "jvmserver.properties", "corePath");
+        String agent = (String) Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator + "jvmserver.properties", "agentPath");
         String[] args = new String[4];
         args[0] = "-p" + pid;
         args[1] = "-t127.0.0.1:" + port;
