@@ -3,10 +3,13 @@ import com.dataeye.common.Client;
 import com.dataeye.common.Server;
 import com.dataeye.common.ServerMgr;
 
-import java.io.File;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 public class Test{
 
@@ -14,7 +17,7 @@ public class Test{
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         //System.out.println(System.getProperty("user.dir"));
 
@@ -28,6 +31,11 @@ public class Test{
         Client client = new Client(server);
         String response = client.sendCmd("topthread 10");
         System.out.println(response);*/
+
+
+
+
+
 
     }
 }

@@ -20,7 +20,6 @@ public class FileListener {
 
     private static ArrayList<FileUpdate> list = new ArrayList<>();
 
-    private static final String CONF_DIR = CommonUtil.getLastDirectory(Constant.USER_DIR) + File.separator + "conf";
 
     private static Runnable runnable = new Runnable() {
         @Override
@@ -28,8 +27,8 @@ public class FileListener {
 
             try {
                 WatchService watcher = FileSystems.getDefault().newWatchService();
-                LOGGER.info("config path {} " + CONF_DIR);
-                Path path = Paths.get(CONF_DIR);
+                LOGGER.info("config path {} " + Constant.CONF_DIR);
+                Path path = Paths.get(Constant.CONF_DIR);
                 path.register(watcher, ENTRY_CREATE, ENTRY_MODIFY, ENTRY_DELETE);
 
                 //
@@ -40,7 +39,7 @@ public class FileListener {
                         Path file = (Path)event.context();
                         LOGGER.info("file {} changed......", file.getFileName());
                         System.out.println(file.toString());
-                        notice(file.toString());
+                        notice(Constant.CONF_DIR + File.separator + file.getFileName());
                     }
                     key.reset();
                 }

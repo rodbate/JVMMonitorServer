@@ -4,6 +4,7 @@ package com.dataeye;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -13,13 +14,23 @@ public class ResourceLoad {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ResourceLoad.class);
 
-    private static Map<String, Map<Object, Object >> properties = new ConcurrentHashMap<>();
-
-    static {
+    private ResourceLoad () {
         init();
     }
 
-    public static void init(){
+    private static ResourceLoad instance;
+
+    public synchronized static ResourceLoad getInstance(){
+        if (instance == null) {
+            instance = new ResourceLoad();
+        }
+        return instance;
+    }
+
+    private static volatile Map<String, Map<Object, Object >> properties = new ConcurrentHashMap<>();
+
+
+    public void init(){
         FileListener.register(new FileUpdate() {
             @Override
             public void update(String fileName) {
@@ -30,14 +41,15 @@ public class ResourceLoad {
         });
     }
 
-    private static void load(String filePath){
+    private void load(String filePath){
         Objects.requireNonNull(filePath, "File Path can not be null");
-        InputStream file = ResourceLoad.class.getClassLoader().getResourceAsStream(filePath);
-        Map<Object, Object> kvs = new HashMap<>();
 
+        Map<Object, Object> kvs = new HashMap<>();
+        InputStream in = null;
         Properties props = new Properties();
         try {
-            props.load(file);
+            in = new FileInputStream(filePath);
+            props.load(in);
             Enumeration names = props.propertyNames();
             while (names.hasMoreElements()) {
                 Object name = names.nextElement();
@@ -46,17 +58,25 @@ public class ResourceLoad {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         properties.put(filePath, kvs);
     }
 
-    private static void reload(String filePath){
+    private void reload(String filePath){
         LOGGER.info("the file {} auto reload", filePath);
         properties.remove(filePath);
         load(filePath);
     }
 
-    public static Object getValue(String filePath, Object key){
+    public Object getValue(String filePath, Object key){
         Map<Object, Object> kvs = properties.get(filePath);
         if (kvs == null) {
             load(filePath);
