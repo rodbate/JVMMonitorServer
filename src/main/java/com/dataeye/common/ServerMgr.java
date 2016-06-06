@@ -33,7 +33,7 @@ public class ServerMgr {
     }
 
     //服务器空闲时间(idle)
-    private final long DURATION_TIME = 5 * 60 * 1000;
+    private final long DURATION_TIME = 1 * 10 * 1000;
 
     //进程id与启动的server一一对应
     private Map<Integer, Server> serverPool = new ConcurrentHashMap<>();
@@ -50,15 +50,13 @@ public class ServerMgr {
             LOGGER.info("Monitor Server starting.....");
             // TODO: 2016/6/2 轮询服务器池中server是否过期
             while (true) {
-                Set<Integer> keys = serverPool.keySet();
-                for (int key : keys) {
+                for (int key : serverPool.keySet()) {
                     Server server = serverPool.get(key);
                     //LOGGER.info(server.getPid() + " " + server.getPort());
                     long lastRequest =server.getLastRequest();
                     long now = System.currentTimeMillis();
                     if ((now - lastRequest) > DURATION_TIME) {
                         server.stop();
-                        break;
                     }
                 }
 
