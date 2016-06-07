@@ -40,7 +40,7 @@ public class Help extends BaseCmd{
                 "-core E:\\MyProjects\\JVMMonitorServer\\core\\build\\libs\\core-1.0.jar -agent " +
                 "E:\\MyProjects\\JVMMonitorServer\\agent\\build\\libs\\agent-1.0.jar -pid 6782";
 
-        Process process = ProcessUtil.process("cmd.exe /c jps -m -l");
+        Process process = ProcessUtil.process("jps -m -l");
 
         BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String line;

@@ -29,6 +29,10 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
 
     @CmdMapper("/greys/cmds")
     public Object greysCmds(XLHttpRequest req, XLHttpResponse rsp) {
+        rsp.setHeader("Access-Control-Allow-Origin", "http://10.1.2.197:38085");
+        rsp.setHeader("Access-Control-Allow-Methods", "POST, GET");
+        rsp.setHeader("Access-Control-Max-Age", "3600");
+        rsp.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
         String pid = req.getParameter("pid");
         String cmd = req.getParameter("cmd");
         if (StringUtils.isEmpty(pid)) {
@@ -49,6 +53,10 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
 
     @CmdMapper("/jvm/cmds")
     public Object jvmCmds(XLHttpRequest req, XLHttpResponse rsp) {
+        rsp.setHeader("Access-Control-Allow-Origin", "http://10.1.2.197:38085");
+        rsp.setHeader("Access-Control-Allow-Methods", "POST, GET");
+        rsp.setHeader("Access-Control-Max-Age", "3600");
+        rsp.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
         String cmd = req.getParameter("cmd");
         if (StringUtils.isEmpty(cmd)) {
             cmd = "jps -ml";
