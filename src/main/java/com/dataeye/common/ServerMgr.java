@@ -33,7 +33,7 @@ public class ServerMgr {
     }
 
     //服务器空闲时间(idle)
-    private final long DURATION_TIME = 1 * 10 * 1000;
+    private final long DURATION_TIME = Constant.DURATION_TIME_MIN * 60 * 1000L;
 
     //进程id与启动的server一一对应
     public ConcurrentMap<Integer, Server> serverPool = new ConcurrentHashMap<>();

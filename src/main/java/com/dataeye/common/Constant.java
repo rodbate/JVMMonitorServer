@@ -15,4 +15,7 @@ public class Constant {
             File.separator + "conf";
 
     public static ResourceLoad RESOURCE_LOAD = ResourceLoad.getInstance();
+
+    public static final int DURATION_TIME_MIN = (int) RESOURCE_LOAD.getValue(CONF_DIR + File.separator +
+            "jvmserver.properties", "durationTime");
 }
