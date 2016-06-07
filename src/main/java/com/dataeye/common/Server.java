@@ -32,7 +32,7 @@ public class Server {
         args = buildArgs();
     }
 
-    public synchronized void start(){
+    public void start(){
         try {
             Server server = mgr.getServerByPid(pid);
 
@@ -62,9 +62,9 @@ public class Server {
 
                     Thread.sleep(20);
                 }
-                mgr.getServerPool().put(pid, this);
-                mgr.getPortInUsing().add(port);
-                mgr.getPortAvailable().remove(port);
+                mgr.serverPool.putIfAbsent(pid, this);
+                mgr.portInUsing.add(port);
+                mgr.portAvailable.remove(port);
                 lastRequest = System.currentTimeMillis();
                 //LOGGER.info("server pool size is {} ",mgr.getServerPool().size());
             } else {
@@ -76,14 +76,14 @@ public class Server {
         }
     }
 
-    public synchronized void stop(){
+    public void stop(){
         // TODO: 2016/6/2  client send 'shutdown' command
         Client client = new Client(this);
         String response = client.sendCmd("shutdown");
         LOGGER.info("server shutdown info : \n" + response);
-        mgr.getServerPool().remove(pid);
-        mgr.getPortInUsing().remove(port);
-        mgr.getPortAvailable().add(port);
+        mgr.serverPool.remove(pid);
+        mgr.portInUsing.remove(port);
+        mgr.portAvailable.add(port);
     }
 
 

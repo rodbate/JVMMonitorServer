@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
+import java.util.concurrent.ConcurrentMap;
 
 
 public class ServerMgr {
@@ -36,13 +36,13 @@ public class ServerMgr {
     private final long DURATION_TIME = 1 * 10 * 1000;
 
     //进程id与启动的server一一对应
-    private Map<Integer, Server> serverPool = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Server> serverPool = new ConcurrentHashMap<>();
 
     //可用的端口
-    private Set<Integer> portAvailable = new ConcurrentHashSet<>(25);
+    public Set<Integer> portAvailable = new ConcurrentHashSet<>(25);
 
     //正在使用的端口
-    private Set<Integer> portInUsing = new ConcurrentHashSet<>();
+    public Set<Integer> portInUsing = new ConcurrentHashSet<>();
 
     private Runnable runnable = new Runnable() {
         @Override
@@ -102,27 +102,5 @@ public class ServerMgr {
         return serverPool.get(pid);
     }
 
-    public Set<Integer> getPortAvailable() {
-        return portAvailable;
-    }
 
-    public void setPortAvailable(Set<Integer> portAvailable) {
-        this.portAvailable = portAvailable;
-    }
-
-    public Set<Integer> getPortInUsing() {
-        return portInUsing;
-    }
-
-    public void setPortInUsing(Set<Integer> portInUsing) {
-        this.portInUsing = portInUsing;
-    }
-
-    public Map<Integer, Server> getServerPool() {
-        return serverPool;
-    }
-
-    public void setServerPool(Map<Integer, Server> serverPool) {
-        this.serverPool = serverPool;
-    }
 }
