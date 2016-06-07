@@ -32,7 +32,7 @@ public class Server {
         args = buildArgs();
     }
 
-    public void start(){
+    public synchronized void start(){
         try {
             Server server = mgr.getServerByPid(pid);
 
@@ -59,6 +59,8 @@ public class Server {
                     }catch (Exception e) {
                         //ignore
                     }
+
+                    Thread.sleep(20);
                 }
                 mgr.getServerPool().put(pid, this);
                 mgr.getPortInUsing().add(port);
@@ -74,7 +76,7 @@ public class Server {
         }
     }
 
-    public void stop(){
+    public synchronized void stop(){
         // TODO: 2016/6/2  client send 'shutdown' command
         Client client = new Client(this);
         String response = client.sendCmd("shutdown");
