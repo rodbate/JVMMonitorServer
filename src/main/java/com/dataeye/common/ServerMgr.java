@@ -20,6 +20,7 @@ public class ServerMgr {
         for (int i = 46665; i < 46690; i++) {
             portAvailable.add(i);
         }
+
         Thread monitor = new Thread(runnable);
         monitor.setName("Detect The Expired Server Thread");
         monitor.start();

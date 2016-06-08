@@ -31,7 +31,7 @@ public class Client {
             in = socket.getInputStream();
             out = socket.getOutputStream();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 

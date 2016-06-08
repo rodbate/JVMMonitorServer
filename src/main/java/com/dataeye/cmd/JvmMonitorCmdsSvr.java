@@ -43,7 +43,7 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
             return "cmd is empty";
         }
 
-        Server server = new Server(Integer.parseInt(pid));
+        Server server = new Server(Integer.parseInt(pid), "");
         System.out.println(server.getPort());
         server.start();
         Client client = new Client(server);
@@ -83,7 +83,7 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
     }
 
     public static void main(String[] args) throws Exception {
-        Server server = new Server(13092);
+        Server server = new Server(13092, "");
         System.out.println(server.getPort());
         server.start();
 

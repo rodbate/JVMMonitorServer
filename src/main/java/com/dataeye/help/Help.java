@@ -3,12 +3,15 @@ package com.dataeye.help;
 
 import com.dataeye.ResourceLoad;
 import com.dataeye.common.Client;
+import com.dataeye.common.CommonUtil;
 import com.dataeye.common.Constant;
 import com.dataeye.common.Server;
 import com.xunlei.netty.httpserver.cmd.BaseCmd;
 import com.xunlei.netty.httpserver.cmd.CmdMapper;
 import com.xunlei.netty.httpserver.component.XLHttpRequest;
 import com.xunlei.netty.httpserver.component.XLHttpResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
 import java.io.*;
@@ -17,21 +20,30 @@ import java.net.Socket;
 @Controller
 public class Help extends BaseCmd{
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Help.class);
+
     @CmdMapper("/jvm/help")
     public Object help(XLHttpRequest request, XLHttpResponse response) throws IOException {
         String pid = request.getParameter("pid");
         String cmd = request.getParameter("cmd");
         System.out.println("======== cmd =======" + cmd);
-        Server server = new Server(Integer.parseInt(pid));
-        server.start();
-        Client c = new Client(server);
+        System.out.println("========= user =====" + System.getProperty("user.name"));
+        Process process = ProcessUtil.process("su hadoop");
+        System.out.println("========= user =====" + System.getProperty("user.name"));
 
-        return c.sendCmd(cmd);
+
+        return null;
     }
 
     @CmdMapper("/jvm/test")
     public Object test(XLHttpRequest request, XLHttpResponse response) throws Exception{
         return Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator + "jvmserver.properties", "corePath");
+    }
+
+    @CmdMapper("/jvm/user")
+    public Object getUser(XLHttpRequest request, XLHttpResponse response) throws Exception{
+        String pid = request.getParameter("pid");
+        return CommonUtil.getUserByPid(pid);
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -67,5 +79,45 @@ public class Help extends BaseCmd{
 
         socket.close();
         System.out.println(sb.toString());*/
+    }
+
+    @CmdMapper("/jvm/process")
+    public Object process(XLHttpRequest request, XLHttpResponse response) throws Exception{
+        //String core = (String) Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator + "jvmserver.properties", "corePath");
+        //String agent = (String) Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator + "jvmserver.properties", "agentPath");
+        String pid = request.getParameter("pid");
+        String cmd = request.getParameter("cmd");
+        //Process p = ProcessUtil.process("su hadoop");
+
+        //p.waitFor();
+
+        String com = Constant.CONF_DIR + File.separator + "start.sh " + pid;
+
+        LOGGER.info("start shell path {}", com);
+
+        String[] cm = new String[]{"/bin/sh", "-c", "su hadoop -s " + com};
+
+        Process process = Runtime.getRuntime().exec(cm);
+
+        process.waitFor();
+
+        Socket socket = SimpleClient.connect(3658);
+        InputStream in = socket.getInputStream();
+        OutputStream os = socket.getOutputStream();
+
+        os.write((cmd + "\n").getBytes());
+        os.flush();
+
+        char b;
+        StringBuilder sb = new StringBuilder();
+        while ((b = (char) in.read()) != 0x04) {
+            sb.append(b);
+        }
+
+        os.close();
+        in.close();
+
+        socket.close();
+        return sb.toString();
     }
 }

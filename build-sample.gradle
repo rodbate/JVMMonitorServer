@@ -1,3 +1,5 @@
+import java.nio.file.Paths
+
 group 'JVMMonitorServer'
 version '1.0'
 
@@ -13,18 +15,24 @@ repositories {
     }
 }
 
+def separator = File.separator
+def javaHome = System.getProperty('java.home')
+def path = Paths.get(javaHome).getParent().toAbsolutePath().toString()
+def toolsPath = path + separator + 'lib' + separator + 'tools.jar'
+
 dependencies {
     compile project(':agent')
     compile project(':core')
     compile 'dc-central:dc-httpserver:1.0.0-SNAPSHOT'
-    compile files('%JAVA_HOME%\\lib\\tools.jar')
+    //compile files('E:\\tools.jar')
+    compile files(toolsPath)
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
 
 
 compileJava.options.encoding = 'UTF-8'
-compileTestJava.options.encoding = 'UTF-8'
+
 
 gradle.projectsEvaluated {
     tasks.withType(JavaCompile) {

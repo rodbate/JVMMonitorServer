@@ -1,12 +1,14 @@
 package com.dataeye.common;
 
 
-import com.dataeye.ResourceLoad;
 import com.dataeye.core.GreysLauncher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 public class Server {
 
@@ -16,37 +18,48 @@ public class Server {
 
     private int pid;
 
-    private String[] args;
+    private String user;
+
+    private Process process;
 
     private long lastRequest = System.currentTimeMillis();
 
     private ServerMgr mgr = ServerMgr.getInstance();
 
+
     public synchronized void request(){
         lastRequest = System.currentTimeMillis();
     }
 
-    public Server(int pid) {
+    public Server(int pid, String user) {
         this.pid = pid;
+        this.user = user;
         port = mgr.getPort();
-        args = buildArgs();
     }
 
     public void start(){
         try {
             Server server = mgr.getServerByPid(pid);
+            LOGGER.info("the current pid is {}", pid);
+            LOGGER.info("get server {} from server pool", server);
 
             if (server == null) {
-                new Thread("GaServer Thread") {
-                    @Override
-                    public void run() {
-                        try {
-                            new GreysLauncher(args);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }.start();
+
+                String core = (String) Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator + "jvmserver.properties", "corePath");
+                String agent = (String) Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator + "jvmserver.properties", "agentPath");
+
+                String shell = Constant.CONF_DIR + File.separator + "start.sh " + core + " " + port + " " + agent + " " + pid;
+
+                LOGGER.info("start shell path {}", shell);
+
+                String cmd = "su " + user + " -s " + shell;
+
+                String[] command = new String[]{"/bin/sh", "-c", cmd};
+
+                process = Runtime.getRuntime().exec(command);
+
+                process.waitFor();
+
 
                 while (true) {
                     try {
@@ -62,17 +75,19 @@ public class Server {
 
                     Thread.sleep(20);
                 }
+
                 mgr.serverPool.putIfAbsent(pid, this);
                 mgr.portInUsing.add(port);
                 mgr.portAvailable.remove(port);
                 lastRequest = System.currentTimeMillis();
+                CommonUtil.writePortToFile(String.valueOf(port));
                 //LOGGER.info("server pool size is {} ",mgr.getServerPool().size());
             } else {
                 port = server.getPort();
                 LOGGER.info("" + server.getPid());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //ignore
         }
     }
 
@@ -84,20 +99,13 @@ public class Server {
         mgr.serverPool.remove(pid);
         mgr.portInUsing.remove(port);
         mgr.portAvailable.add(port);
+        if (process != null) {
+            process.destroy();
+        }
+        CommonUtil.removePortFromFile(String.valueOf(port));
     }
 
 
-    private String[] buildArgs(){
-        // TODO: 2016/6/3 构造参数
-        String core = (String) Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator + "jvmserver.properties", "corePath");
-        String agent = (String) Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator + "jvmserver.properties", "agentPath");
-        String[] args = new String[4];
-        args[0] = "-p" + pid;
-        args[1] = "-t127.0.0.1:" + port;
-        args[2] = "-c" + core;
-        args[3] = "-a"+agent;
-        return args;
-    }
 
     public long getLastRequest() {
         return lastRequest;

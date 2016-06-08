@@ -11,8 +11,7 @@ public class Constant {
 
     public static final String USER_DIR = System.getProperty("user.dir");
 
-    public static final String CONF_DIR = CommonUtil.getLastDirectory(Constant.USER_DIR) +
-            File.separator + "conf";
+    public static final String CONF_DIR = USER_DIR + File.separator + "conf";
 
     public static ResourceLoad RESOURCE_LOAD = ResourceLoad.getInstance();
 

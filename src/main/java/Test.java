@@ -1,5 +1,6 @@
 import com.dataeye.ResourceLoad;
 import com.dataeye.common.Client;
+import com.dataeye.common.CommonUtil;
 import com.dataeye.common.Server;
 import com.dataeye.common.ServerMgr;
 
@@ -33,7 +34,7 @@ public class Test{
         System.out.println(response);*/
 
 
-
+        CommonUtil.writePortToFile("11111");
 
 
 
