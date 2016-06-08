@@ -20,22 +20,19 @@ public class Client {
         this.server = server;
     }
 
-    private void connect() {
+    private void connect() throws IOException {
 
         server.request();
 
         socket = new Socket();
         InetSocketAddress address = new InetSocketAddress(server.getPort());
-        try {
-            socket.connect(address);
-            in = socket.getInputStream();
-            out = socket.getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        socket.connect(address);
+        in = socket.getInputStream();
+        out = socket.getOutputStream();
     }
 
-    public String sendCmd(String command){
+    public String sendCmd(String command) throws Exception {
 
         connect();
 
@@ -63,6 +60,7 @@ public class Client {
                 response = sb.toString();
             } catch (IOException e) {
                 e.printStackTrace();
+                throw new Exception(e);
             } finally {
                 close();
             }

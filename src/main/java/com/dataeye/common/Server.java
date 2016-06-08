@@ -1,7 +1,6 @@
 package com.dataeye.common;
 
 
-import com.dataeye.ResourceLoad;
 import com.dataeye.core.GreysLauncher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +31,8 @@ public class Server {
         args = buildArgs();
     }
 
-    public void start(){
-        try {
+    public void start() throws Exception {
+
             Server server = mgr.getServerByPid(pid);
 
             if (server == null) {
@@ -43,43 +42,48 @@ public class Server {
                         try {
                             new GreysLauncher(args);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            throw new RuntimeException(e);
                         }
                     }
                 }.start();
 
+
+                int retry = 0;
                 while (true) {
                     try {
                         Client client = new Client(this);
                         String response = client.sendCmd("version");
-                        //LOGGER.info("response " + response);
                         if (response != null) {
                             break;
                         }
-                    }catch (Exception e) {
-                        //ignore
+                    } catch (Exception e) {
+                        if (retry++ > 5) {
+                            throw new Exception(e);
+                        }
                     }
 
-                    Thread.sleep(20);
+                    Thread.sleep(200);
                 }
                 mgr.serverPool.putIfAbsent(pid, this);
                 mgr.portInUsing.add(port);
                 mgr.portAvailable.remove(port);
                 lastRequest = System.currentTimeMillis();
-                //LOGGER.info("server pool size is {} ",mgr.getServerPool().size());
             } else {
                 port = server.getPort();
                 LOGGER.info("" + server.getPid());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void stop(){
         // TODO: 2016/6/2  client send 'shutdown' command
+        System.out.println("=============stop================");
         Client client = new Client(this);
-        String response = client.sendCmd("shutdown");
+        String response = null;
+        try {
+            response = client.sendCmd("shutdown");
+        } catch (Exception e) {
+            LOGGER.error("connect server error");
+        }
         LOGGER.info("server shutdown info : \n" + response);
         mgr.serverPool.remove(pid);
         mgr.portInUsing.remove(port);

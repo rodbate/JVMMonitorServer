@@ -53,6 +53,8 @@ public class ServerMgr {
                 for (int key : serverPool.keySet()) {
                     Server server = serverPool.get(key);
                     //LOGGER.info(server.getPid() + " " + server.getPort());
+                    //System.out.println(server.getPid() + " " + server.getPort());
+
                     long lastRequest =server.getLastRequest();
                     long now = System.currentTimeMillis();
                     if ((now - lastRequest) > DURATION_TIME) {
@@ -100,6 +102,14 @@ public class ServerMgr {
     //检测进程id对应的server是否存在
     public Server getServerByPid(int pid){
         return serverPool.get(pid);
+    }
+
+
+    public void shutdown(){
+        for (Map.Entry<Integer, Server> serverMap : serverPool.entrySet()) {
+            Server server = serverMap.getValue();
+            server.stop();
+        }
     }
 
 

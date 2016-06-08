@@ -1,7 +1,6 @@
 package com.dataeye;
 
 
-import com.dataeye.common.CommonUtil;
 import com.dataeye.common.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

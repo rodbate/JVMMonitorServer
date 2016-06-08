@@ -33,8 +33,7 @@ public class Test{
         System.out.println(response);*/
 
 
-
-
+        System.out.println(System.getProperty("user.dir"));
 
 
     }

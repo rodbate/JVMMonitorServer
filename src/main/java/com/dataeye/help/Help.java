@@ -23,10 +23,22 @@ public class Help extends BaseCmd{
         String cmd = request.getParameter("cmd");
         System.out.println("======== cmd =======" + cmd);
         Server server = new Server(Integer.parseInt(pid));
-        server.start();
+        try {
+            server.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
         Client c = new Client(server);
 
-        return c.sendCmd(cmd);
+        String result = null;
+        try {
+            result = c.sendCmd(cmd);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     @CmdMapper("/jvm/test")
