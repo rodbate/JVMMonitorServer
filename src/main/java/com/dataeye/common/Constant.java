@@ -17,4 +17,8 @@ public class Constant {
 
     public static final int DURATION_TIME_MIN = Integer.parseInt((String) RESOURCE_LOAD.getValue(CONF_DIR + File.separator +
             "jvmserver.properties", "durationTime"));
+
+    public static final String ACCROSS_DOMAIN = (String) RESOURCE_LOAD.getValue(CONF_DIR + File.separator +
+            "jvmserver.properties", "Access-Control-Allow-Origin");
+
 }
