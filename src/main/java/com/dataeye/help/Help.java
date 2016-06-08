@@ -91,7 +91,7 @@ public class Help extends BaseCmd{
 
         //p.waitFor();
 
-        String com = Constant.CONF_DIR + File.separator + "start.sh " + pid;
+        /*String com = Constant.CONF_DIR + File.separator + "start.sh " + pid;
 
         LOGGER.info("start shell path {}", com);
 
@@ -117,7 +117,14 @@ public class Help extends BaseCmd{
         os.close();
         in.close();
 
-        socket.close();
-        return sb.toString();
+        socket.close();*/
+
+        String user = CommonUtil.getUserByPid(pid);
+        Server server = new Server(Integer.valueOf(pid), user);
+        server.start();
+
+        Client c = new Client(server);
+        return c.sendCmd(cmd);
+
     }
 }

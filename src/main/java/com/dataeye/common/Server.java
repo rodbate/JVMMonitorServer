@@ -37,7 +37,7 @@ public class Server {
         port = mgr.getPort();
     }
 
-    public void start(){
+    public synchronized void start(){
         try {
             Server server = mgr.getServerByPid(pid);
             LOGGER.info("the current pid is {}", pid);
@@ -54,6 +54,8 @@ public class Server {
 
                 String cmd = "su " + user + " -s " + shell;
 
+                LOGGER.info("shell cmd " + cmd);
+
                 String[] command = new String[]{"/bin/sh", "-c", cmd};
 
                 process = Runtime.getRuntime().exec(command);
@@ -67,6 +69,7 @@ public class Server {
                         String response = client.sendCmd("version");
                         //LOGGER.info("response " + response);
                         if (response != null) {
+                            LOGGER.info("while loop break ........");
                             break;
                         }
                     }catch (Exception e) {
@@ -76,7 +79,9 @@ public class Server {
                     Thread.sleep(20);
                 }
 
+
                 mgr.serverPool.putIfAbsent(pid, this);
+                LOGGER.info("pid is {}, server pool size {}", pid, mgr.serverPool.size());
                 mgr.portInUsing.add(port);
                 mgr.portAvailable.remove(port);
                 lastRequest = System.currentTimeMillis();
@@ -91,7 +96,7 @@ public class Server {
         }
     }
 
-    public void stop(){
+    public synchronized void stop(){
         // TODO: 2016/6/2  client send 'shutdown' command
         Client client = new Client(this);
         String response = client.sendCmd("shutdown");

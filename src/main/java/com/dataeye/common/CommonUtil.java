@@ -28,7 +28,8 @@ public class CommonUtil {
             in.read(b);
             in.close();
             process.destroy();
-            return new String(b);
+            String user = new String(b);
+            return user.replace("\n", "").replace("\r\n", "");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -39,7 +40,7 @@ public class CommonUtil {
 
     //将port写入 data/port中
     public synchronized static void writePortToFile(String port){
-        String dir = Constant.CONF_DIR + File.separator + "data";
+        String dir = Constant.USER_DIR + File.separator + "data";
         File portFile = new File(dir + File.separator + "port");
         File file = new File(dir);
 
@@ -72,7 +73,7 @@ public class CommonUtil {
 
     //将指定的port从 data/port 文件中移除
     public static synchronized void removePortFromFile(String port){
-        String dir = Constant.CONF_DIR + File.separator + "data";
+        String dir = Constant.USER_DIR + File.separator + "data";
         File portFile = new File(dir + File.separator + "port");
 
         if (portFile.exists()) {
