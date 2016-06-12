@@ -1,14 +1,10 @@
 package com.dataeye.common;
 
 
-import com.dataeye.core.GreysLauncher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 
 public class Server {
 
@@ -116,23 +112,14 @@ public class Server {
         return lastRequest;
     }
 
-    public void setLastRequest(long lastRequest) {
-        this.lastRequest = lastRequest;
-    }
 
     public int getPid() {
         return pid;
     }
 
-    public void setPid(int pid) {
-        this.pid = pid;
-    }
 
     public int getPort() {
         return port;
     }
 
-    public void setPort(int port) {
-        this.port = port;
-    }
 }
