@@ -1,6 +1,8 @@
 package com.dataeye.common;
 
 
+import org.slf4j.Logger;
+
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,6 +14,7 @@ import java.util.zip.InflaterInputStream;
 
 public class CommonUtil {
 
+    private static final Logger _LOGGER_FILE = LogUtil.getLogger("jvmserver");
 
     //获取上级目录(绝对路径)
     public static String getLastDirectory(String path){
@@ -34,9 +37,11 @@ public class CommonUtil {
             String user = new String(b);
             return user.replace("\n", "").replace("\r\n", "");
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            _LOGGER_FILE.info(ExceptionStackUtil.print(e));
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            _LOGGER_FILE.info(ExceptionStackUtil.print(e));
         }
         return "";
     }
@@ -54,7 +59,8 @@ public class CommonUtil {
                     try {
                         portFile.createNewFile();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        _LOGGER_FILE.info(ExceptionStackUtil.print(e));
                     }
                 }
             }
@@ -63,7 +69,8 @@ public class CommonUtil {
                 try {
                     portFile.createNewFile();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    _LOGGER_FILE.info(ExceptionStackUtil.print(e));
                 }
             }
         }
@@ -77,9 +84,10 @@ public class CommonUtil {
                 bw.close();
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            _LOGGER_FILE.info(ExceptionStackUtil.print(e));
         } catch (IOException e) {
-            e.printStackTrace();
+            _LOGGER_FILE.info(ExceptionStackUtil.print(e));
         }
     }
 
@@ -110,9 +118,9 @@ public class CommonUtil {
                 }
                 bw.close();
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                _LOGGER_FILE.info(ExceptionStackUtil.print(e));
             } catch (IOException e) {
-                e.printStackTrace();
+                _LOGGER_FILE.info(ExceptionStackUtil.print(e));
             }
         }
     }
@@ -132,9 +140,9 @@ public class CommonUtil {
 
             return set.contains(port);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            _LOGGER_FILE.info(ExceptionStackUtil.print(e));
         } catch (IOException e) {
-            e.printStackTrace();
+            _LOGGER_FILE.info(ExceptionStackUtil.print(e));
         }
 
         return flag;

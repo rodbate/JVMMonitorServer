@@ -12,7 +12,9 @@ import java.util.concurrent.ConcurrentMap;
 
 public class ServerMgr {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(ServerMgr.class);
+    private final Logger _LOGGER_FILE = LogUtil.getLogger("jvmserver");
+
+    private final Logger _LOGGER_STDOUT = LogUtil.getLogger("stdout");
 
     private static ServerMgr instance;
 
@@ -48,7 +50,7 @@ public class ServerMgr {
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            LOGGER.info("Monitor Server starting.....");
+            _LOGGER_STDOUT.info("Monitor Server starting.....");
             // TODO: 2016/6/2 轮询服务器池中server是否过期
             while (true) {
 
@@ -68,7 +70,7 @@ public class ServerMgr {
                 try {
                     Thread.sleep(200);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    _LOGGER_FILE.info(ExceptionStackUtil.print(e));
                 }
             }
 

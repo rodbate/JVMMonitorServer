@@ -8,9 +8,11 @@ import java.io.File;
 
 public class Server {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(Server.class);
+    private final Logger LOGGER = LogUtil.getLogger("stdout");
 
-    private static final Logger _LOG = LoggerFactory.getLogger(Server.class);
+    private final Logger _LOGGER_FILE = LogUtil.getLogger("jvmserver");
+
+    private static final Logger _LOGGER_STDOUT = LogUtil.getLogger("stdout");
 
     private int port;
 
@@ -34,8 +36,8 @@ public class Server {
         ServerMgr mg = ServerMgr.getInstance();
         Server server = mg.getServerByPid(pid);
 
-        _LOG.info("the current pid is {}", pid);
-        _LOG.info("get server {} from server pool", server);
+        _LOGGER_STDOUT.info("the current pid is {}", pid);
+        _LOGGER_STDOUT.info("get server {} from server pool", server);
 
         if (server == null) {
             server = new Server(pid);
@@ -81,7 +83,8 @@ public class Server {
                         break;
                     }
                 }catch (Exception e) {
-                    //ignore
+                    //log
+                    _LOGGER_FILE.info(ExceptionStackUtil.print(e));
                 }
 
                 Thread.sleep(20);
@@ -97,7 +100,8 @@ public class Server {
             //LOGGER.info("server pool size is {} ",mgr.getServerPool().size());
 
         } catch (Exception e) {
-            //ignore
+            //log
+            _LOGGER_FILE.info(ExceptionStackUtil.print(e));
         }
     }
 

@@ -1,6 +1,8 @@
 package com.dataeye.common;
 
 
+import org.slf4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -8,6 +10,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public class Client {
+
+    private final Logger _LOGGER_FILE = LogUtil.getLogger("jvmserver");
 
     private InputStream in;
     private OutputStream out;
@@ -32,6 +36,7 @@ public class Client {
             out = socket.getOutputStream();
         } catch (IOException e) {
             //e.printStackTrace();
+            _LOGGER_FILE.info(ExceptionStackUtil.print(e));
         }
     }
 
@@ -46,7 +51,8 @@ public class Client {
                 out.write(command.getBytes());
                 response = "server [port[" + server.getPort() + "]] shut down now.......";
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                _LOGGER_FILE.info(ExceptionStackUtil.print(e));
             } finally {
                 close();
             }
@@ -62,7 +68,8 @@ public class Client {
                 }
                 response = sb.toString();
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                _LOGGER_FILE.info(ExceptionStackUtil.print(e));
             } finally {
                 close();
             }
@@ -75,7 +82,8 @@ public class Client {
             try {
                 socket.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                _LOGGER_FILE.info(ExceptionStackUtil.print(e));
             }
         }
     }

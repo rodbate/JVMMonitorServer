@@ -1,8 +1,6 @@
 import com.dataeye.ResourceLoad;
-import com.dataeye.common.Client;
-import com.dataeye.common.CommonUtil;
-import com.dataeye.common.Server;
-import com.dataeye.common.ServerMgr;
+import com.dataeye.common.*;
+import org.slf4j.Logger;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -34,8 +32,7 @@ public class Test{
         System.out.println(response);*/
 
 
-        CommonUtil.writePortToFile("11111");
-
+       // CommonUtil.writePortToFile("11111");
 
 
     }
