@@ -5,3 +5,4 @@ build/
 src/main/java/nio
 data.txt
 /build-sample.gradle
+logs/
