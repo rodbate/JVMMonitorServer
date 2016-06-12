@@ -22,7 +22,7 @@ public class Server {
 
     private Process process;
 
-    private long lastRequest = System.currentTimeMillis();
+    private volatile long lastRequest = System.currentTimeMillis();
 
     private ServerMgr mgr = ServerMgr.getInstance();
 
