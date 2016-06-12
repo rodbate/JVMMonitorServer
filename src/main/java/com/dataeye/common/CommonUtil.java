@@ -5,7 +5,10 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.zip.InflaterInputStream;
 
 public class CommonUtil {
 
@@ -58,11 +61,13 @@ public class CommonUtil {
         }
 
         try {
-            FileOutputStream out = new FileOutputStream(portFile, true);
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out));
-            bw.write(port);
-            bw.newLine();
-            bw.close();
+            if (!checkPortExist(portFile, port)) {
+                FileOutputStream out = new FileOutputStream(portFile, true);
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out));
+                bw.write(port);
+                bw.newLine();
+                bw.close();
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -80,7 +85,7 @@ public class CommonUtil {
             List<String> ports = new ArrayList<>();
             try {
                 BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(portFile)));
-                String line = "";
+                String line;
                 while ((line = br.readLine()) != null) {
                     if (!port.equals(line.trim())) {
                         ports.add(line.trim());
@@ -102,5 +107,28 @@ public class CommonUtil {
                 e.printStackTrace();
             }
         }
+    }
+
+    private static boolean checkPortExist(File portFile, String port){
+        boolean flag = false;
+        Set<String> set = new HashSet<>();
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(portFile)));
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (!port.equals(line.trim())) {
+                    set.add(line.trim());
+                }
+            }
+            br.close();
+
+            return set.contains(port);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return flag;
     }
 }
