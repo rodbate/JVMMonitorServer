@@ -44,7 +44,7 @@ public class Client {
             command = command + "\n";
             try {
                 out.write(command.getBytes());
-                response = "server shut down now.......";
+                response = "server [port[" + server.getPort() + "]] shut down now.......";
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
