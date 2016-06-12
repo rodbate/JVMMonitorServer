@@ -119,9 +119,7 @@ public class Help extends BaseCmd{
 
         socket.close();*/
 
-        String user = CommonUtil.getUserByPid(pid);
-        Server server = new Server(Integer.valueOf(pid), user);
-        server.start();
+        Server server = Server.launchServer(Integer.valueOf(pid));
 
         Client c = new Client(server);
         return c.sendCmd(cmd);

@@ -10,6 +10,8 @@ public class Server {
 
     private final Logger LOGGER = LoggerFactory.getLogger(Server.class);
 
+    private static final Logger _LOG = LoggerFactory.getLogger(Server.class);
+
     private int port;
 
     private int pid;
@@ -18,7 +20,7 @@ public class Server {
 
     private Process process;
 
-    private volatile long lastRequest = System.currentTimeMillis();
+    private volatile long lastRequest;
 
     private ServerMgr mgr = ServerMgr.getInstance();
 
@@ -27,66 +29,73 @@ public class Server {
         lastRequest = System.currentTimeMillis();
     }
 
-    public Server(int pid, String user) {
+
+    public static synchronized Server launchServer(int pid){
+        ServerMgr mg = ServerMgr.getInstance();
+        Server server = mg.getServerByPid(pid);
+
+        _LOG.info("the current pid is {}", pid);
+        _LOG.info("get server {} from server pool", server);
+
+        if (server == null) {
+            server = new Server(pid);
+            server.start();
+        }
+
+        return server;
+    }
+    private Server(int pid) {
         this.pid = pid;
-        this.user = user;
+        this.user = CommonUtil.getUserByPid(String.valueOf(pid));
         port = mgr.getPort();
     }
 
-    public synchronized void start(){
+    private void start(){
         try {
-            Server server = mgr.getServerByPid(pid);
-            LOGGER.info("the current pid is {}", pid);
-            LOGGER.info("get server {} from server pool", server);
 
-            if (server == null) {
+            String core = (String) Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator + "jvmserver.properties", "corePath");
+            String agent = (String) Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator + "jvmserver.properties", "agentPath");
 
-                String core = (String) Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator + "jvmserver.properties", "corePath");
-                String agent = (String) Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator + "jvmserver.properties", "agentPath");
+            String shell = Constant.CONF_DIR + File.separator + "start.sh " + core + " " + port + " " + agent + " " + pid;
 
-                String shell = Constant.CONF_DIR + File.separator + "start.sh " + core + " " + port + " " + agent + " " + pid;
+            LOGGER.info("start shell path {}", shell);
 
-                LOGGER.info("start shell path {}", shell);
+            String cmd = "su " + user + " -s " + shell;
 
-                String cmd = "su " + user + " -s " + shell;
+            LOGGER.info("shell cmd " + cmd);
 
-                LOGGER.info("shell cmd " + cmd);
+            String[] command = new String[]{"/bin/sh", "-c", cmd};
 
-                String[] command = new String[]{"/bin/sh", "-c", cmd};
+            process = Runtime.getRuntime().exec(command);
 
-                process = Runtime.getRuntime().exec(command);
-
-                process.waitFor();
+            process.waitFor();
 
 
-                while (true) {
-                    try {
-                        Client client = new Client(this);
-                        String response = client.sendCmd("version");
-                        //LOGGER.info("response " + response);
-                        if (response != null) {
-                            LOGGER.info("while loop break ........");
-                            break;
-                        }
-                    }catch (Exception e) {
-                        //ignore
+            while (true) {
+                try {
+                    Client client = new Client(this);
+                    String response = client.sendCmd("version");
+                    //LOGGER.info("response " + response);
+                    if (response != null) {
+                        LOGGER.info("while loop break ........");
+                        break;
                     }
-
-                    Thread.sleep(20);
+                }catch (Exception e) {
+                    //ignore
                 }
 
-
-                mgr.serverPool.putIfAbsent(pid, this);
-                LOGGER.info("pid is {}, server pool size {}", pid, mgr.serverPool.size());
-                mgr.portInUsing.add(port);
-                mgr.portAvailable.remove(port);
-                lastRequest = System.currentTimeMillis();
-                CommonUtil.writePortToFile(String.valueOf(port));
-                //LOGGER.info("server pool size is {} ",mgr.getServerPool().size());
-            } else {
-                port = server.getPort();
-                LOGGER.info("" + server.getPid());
+                Thread.sleep(20);
             }
+
+
+            mgr.serverPool.putIfAbsent(pid, this);
+            LOGGER.info("pid is {}, server pool size {}", pid, mgr.serverPool.size());
+            mgr.portInUsing.add(port);
+            mgr.portAvailable.remove(port);
+
+            CommonUtil.writePortToFile(String.valueOf(port));
+            //LOGGER.info("server pool size is {} ",mgr.getServerPool().size());
+
         } catch (Exception e) {
             //ignore
         }
@@ -108,7 +117,7 @@ public class Server {
 
 
 
-    public long getLastRequest() {
+    public synchronized long getLastRequest() {
         return lastRequest;
     }
 

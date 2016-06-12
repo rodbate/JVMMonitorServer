@@ -58,6 +58,14 @@ public class CommonUtil {
                     }
                 }
             }
+        } else {
+            if (!portFile.exists()){
+                try {
+                    portFile.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         try {

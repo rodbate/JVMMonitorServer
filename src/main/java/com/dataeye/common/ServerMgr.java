@@ -51,10 +51,12 @@ public class ServerMgr {
             LOGGER.info("Monitor Server starting.....");
             // TODO: 2016/6/2 轮询服务器池中server是否过期
             while (true) {
-                for (int key : serverPool.keySet()) {
-                    Server server = serverPool.get(key);
+
+                for (final Map.Entry<Integer, Server> entry : serverPool.entrySet()) {
                     //LOGGER.info(server.getPid() + " " + server.getPort());
                     //System.out.println(server.getPid() + " " + server.getPort());
+
+                    final Server server = entry.getValue();
 
                     long lastRequest =server.getLastRequest();
                     long now = System.currentTimeMillis();
