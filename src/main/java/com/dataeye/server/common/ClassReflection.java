@@ -1,8 +1,6 @@
 package com.dataeye.server.common;
 
 
-import com.dataeye.server.common.annotation.AutoUpdate;
-import com.dataeye.server.common.annotation.Inject;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -122,21 +120,5 @@ public class ClassReflection {
     }
 
 
-
-    public static void main(String[] args) {
-
-        //Set<Class<?>> classes = getClassFromPackage(null, "com.dataeye.server");
-        Set<Class<?>> classes = getClassFilterByAnnotation(Inject.class);
-
-        for (Class c : classes) {
-            Set<Field> fields = getFieldsByClassAndAnnotation(c, AutoUpdate.class);
-            for (Field f : fields) {
-                System.out.println(f.getName());
-                setFiledValue(f, null, 11);
-            }
-        }
-
-        System.out.println(Constant.DURATION_TIME_MIN);
-    }
 
 }
