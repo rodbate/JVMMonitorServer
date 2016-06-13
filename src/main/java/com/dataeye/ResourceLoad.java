@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class ResourceLoad {
 
@@ -27,7 +28,7 @@ public class ResourceLoad {
         return instance;
     }
 
-    private static volatile Map<String, Map<Object, Object >> properties = new ConcurrentHashMap<>();
+    private static ConcurrentMap<String, Map<Object, Object >> properties = new ConcurrentHashMap<>();
 
 
     public void init(){
@@ -67,7 +68,7 @@ public class ResourceLoad {
                 }
             }
         }
-        properties.put(filePath, kvs);
+        properties.putIfAbsent(filePath, kvs);
     }
 
     private void reload(String filePath){

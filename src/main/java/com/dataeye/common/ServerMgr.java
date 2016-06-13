@@ -1,13 +1,17 @@
 package com.dataeye.common;
 
 
+import com.dataeye.FileListener;
+import com.dataeye.FileUpdate;
 import com.xunlei.util.concurrent.ConcurrentHashSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.Exchanger;
 
 
 public class ServerMgr {
@@ -23,6 +27,26 @@ public class ServerMgr {
             portAvailable.add(i);
         }
 
+        FileListener.register(new FileUpdate() {
+            @Override
+            public void update(String fileName) {
+                if (fileName.endsWith("jvmserver.properties")) {
+
+                    try {
+                        _LOGGER_STDOUT.info("CONSTANT DURATION TIME is {}", Constant.DURATION_TIME_MIN);
+
+                        _LOGGER_STDOUT.info("current duration time is {}",
+                                Integer.parseInt((String) Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator +
+                                        "jvmserver.properties", "durationTime")));
+                        DURATION_TIME = Integer.parseInt((String) Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator +
+                                "jvmserver.properties", "durationTime")) * 60 * 1000;
+                    } catch (Exception e) {
+                        _LOGGER_FILE.info(ExceptionStackUtil.print(e));
+                    }
+                }
+            }
+        });
+
         Thread monitor = new Thread(runnable);
         monitor.setName("Detect The Expired Server Thread");
         monitor.start();
@@ -36,7 +60,7 @@ public class ServerMgr {
     }
 
     //服务器空闲时间(idle)
-    private long DURATION_TIME = Constant.DURATION_TIME_MIN * 60 * 1000L;
+    private volatile long DURATION_TIME = Constant.DURATION_TIME_MIN * 60 * 1000L;
 
     //进程id与启动的server一一对应
     public ConcurrentMap<Integer, Server> serverPool = new ConcurrentHashMap<>();

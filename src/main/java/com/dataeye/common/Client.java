@@ -36,7 +36,8 @@ public class Client {
             out = socket.getOutputStream();
         } catch (IOException e) {
             //e.printStackTrace();
-            _LOGGER_FILE.info(ExceptionStackUtil.print(e));
+            //_LOGGER_FILE.info(ExceptionStackUtil.print(e));
+            //ignore
         }
     }
 

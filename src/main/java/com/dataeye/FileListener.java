@@ -28,7 +28,7 @@ public class FileListener {
                 WatchService watcher = FileSystems.getDefault().newWatchService();
                 LOGGER.info("config path {} " + Constant.CONF_DIR);
                 Path path = Paths.get(Constant.CONF_DIR);
-                path.register(watcher, ENTRY_CREATE, ENTRY_MODIFY, ENTRY_DELETE);
+                path.register(watcher, ENTRY_CREATE, ENTRY_MODIFY);
 
                 //
                 while (true) {

@@ -75,6 +75,7 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
                     processList.add(pro);
                 }
             }
+            process.destroy();
             return gson.toJson(processList);
         } catch (IOException e) {
             return "cmd not exits";
