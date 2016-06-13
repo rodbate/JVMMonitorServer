@@ -27,25 +27,6 @@ public class ServerMgr {
             portAvailable.add(i);
         }
 
-        FileListener.register(new FileUpdate() {
-            @Override
-            public void update(String fileName) {
-                if (fileName.endsWith("jvmserver.properties")) {
-
-                    try {
-                        _LOGGER_STDOUT.info("CONSTANT DURATION TIME is {}", Constant.DURATION_TIME_MIN);
-
-                        _LOGGER_STDOUT.info("current duration time is {}",
-                                Integer.parseInt((String) Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator +
-                                        "jvmserver.properties", "durationTime")));
-                        DURATION_TIME = Integer.parseInt((String) Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator +
-                                "jvmserver.properties", "durationTime")) * 60 * 1000;
-                    } catch (Exception e) {
-                        _LOGGER_FILE.info(ExceptionStackUtil.print(e));
-                    }
-                }
-            }
-        });
 
         Thread monitor = new Thread(runnable);
         monitor.setName("Detect The Expired Server Thread");
