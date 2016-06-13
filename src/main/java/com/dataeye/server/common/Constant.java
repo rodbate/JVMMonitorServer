@@ -1,15 +1,16 @@
-package com.dataeye.common;
+package com.dataeye.server.common;
 
 
-import com.dataeye.FileListener;
-import com.dataeye.FileUpdate;
-import com.dataeye.ResourceLoad;
+import com.dataeye.server.FileListener;
+import com.dataeye.server.FileUpdate;
+import com.dataeye.server.ResourceLoad;
+import com.dataeye.server.common.annotation.AutoUpdate;
+import com.dataeye.server.common.annotation.Inject;
 import org.slf4j.Logger;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
+@Inject
 public class Constant {
 
     public static final String USER_DIR = System.getProperty("user.dir");
@@ -18,6 +19,7 @@ public class Constant {
 
     public static ResourceLoad RESOURCE_LOAD = ResourceLoad.getInstance();
 
+    @AutoUpdate
     public static volatile int DURATION_TIME_MIN = Integer.parseInt((String) RESOURCE_LOAD.getValue(CONF_DIR + File.separator +
             "jvmserver.properties", "durationTime"));
 
@@ -29,7 +31,7 @@ public class Constant {
 
     static {
 
-        FileListener.register(new FileUpdate() {
+        /*FileListener.register(new FileUpdate() {
             @Override
             public void update(String fileName) {
                 if (fileName.endsWith("jvmserver.properties")) {
@@ -49,7 +51,7 @@ public class Constant {
                     }
                 }
             }
-        });
+        });*/
     }
 
 }

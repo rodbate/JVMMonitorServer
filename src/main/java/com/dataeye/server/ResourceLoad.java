@@ -1,4 +1,4 @@
-package com.dataeye;
+package com.dataeye.server;
 
 
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package com.dataeye.common;
+package com.dataeye.server.common;
 
 /**
  * 进程信息

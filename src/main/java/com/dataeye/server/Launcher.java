@@ -1,16 +1,13 @@
-package com.dataeye;
+package com.dataeye.server;
 
 
-import com.dataeye.common.Server;
-import com.dataeye.common.ServerMgr;
+import com.dataeye.server.common.AutoUpdatePropertiesUtil;
 import com.xunlei.netty.httpserver.Bootstrap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Set;
-import java.util.concurrent.ConcurrentMap;
 
 @Service
 public class Launcher {
@@ -27,6 +24,7 @@ public class Launcher {
             public void run() {
                 System.out.println("start ..............");
                 ResourceLoad.getInstance();
+                AutoUpdatePropertiesUtil.init();
             }
         }, "classpath:applicationContext.xml");
     }

@@ -1,4 +1,4 @@
-package com.dataeye.utils;
+package com.dataeye.server.utils;
 
 /**
  * Created by wendy on 2016/6/2.

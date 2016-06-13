@@ -1,4 +1,4 @@
-package com.dataeye.common;
+package com.dataeye.server.common;
 
 
 import org.slf4j.Logger;
@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.zip.InflaterInputStream;
 
 public class CommonUtil {
 

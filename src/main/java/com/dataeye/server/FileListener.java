@@ -1,7 +1,7 @@
-package com.dataeye;
+package com.dataeye.server;
 
 
-import com.dataeye.common.Constant;
+import com.dataeye.server.common.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

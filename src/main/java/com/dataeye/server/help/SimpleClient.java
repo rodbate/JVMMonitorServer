@@ -1,4 +1,4 @@
-package com.dataeye.help;
+package com.dataeye.server.help;
 
 
 import java.io.IOException;

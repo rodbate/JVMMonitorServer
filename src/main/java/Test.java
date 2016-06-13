@@ -1,14 +1,4 @@
-import com.dataeye.ResourceLoad;
-import com.dataeye.common.*;
-import org.slf4j.Logger;
-
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
 
 public class Test{
 

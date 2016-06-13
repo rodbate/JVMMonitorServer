@@ -1,11 +1,10 @@
-package com.dataeye.help;
+package com.dataeye.server.help;
 
 
-import com.dataeye.ResourceLoad;
-import com.dataeye.common.Client;
-import com.dataeye.common.CommonUtil;
-import com.dataeye.common.Constant;
-import com.dataeye.common.Server;
+import com.dataeye.server.common.CommonUtil;
+import com.dataeye.server.common.Constant;
+import com.dataeye.server.common.Client;
+import com.dataeye.server.common.Server;
 import com.xunlei.netty.httpserver.cmd.BaseCmd;
 import com.xunlei.netty.httpserver.cmd.CmdMapper;
 import com.xunlei.netty.httpserver.component.XLHttpRequest;
@@ -15,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
 import java.io.*;
-import java.net.Socket;
 
 @Controller
 public class Help extends BaseCmd{

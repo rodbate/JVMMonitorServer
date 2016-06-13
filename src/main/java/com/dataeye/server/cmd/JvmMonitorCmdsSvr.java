@@ -1,10 +1,10 @@
-package com.dataeye.cmd;
+package com.dataeye.server.cmd;
 
-import com.dataeye.common.Client;
-import com.dataeye.common.JpsInfo;
-import com.dataeye.common.Server;
-import com.dataeye.help.ProcessUtil;
-import com.dataeye.utils.StringUtils;
+import com.dataeye.server.common.Client;
+import com.dataeye.server.common.JpsInfo;
+import com.dataeye.server.common.Server;
+import com.dataeye.server.help.ProcessUtil;
+import com.dataeye.server.utils.StringUtils;
 import com.google.gson.Gson;
 import com.xunlei.netty.httpserver.cmd.BaseCmd;
 import com.xunlei.netty.httpserver.cmd.CmdMapper;
