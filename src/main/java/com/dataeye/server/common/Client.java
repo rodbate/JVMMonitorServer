@@ -1,4 +1,4 @@
-package com.dataeye.common;
+package com.dataeye.server.common;
 
 
 import org.slf4j.Logger;
@@ -36,7 +36,8 @@ public class Client {
             out = socket.getOutputStream();
         } catch (IOException e) {
             //e.printStackTrace();
-            _LOGGER_FILE.info(ExceptionStackUtil.print(e));
+            //_LOGGER_FILE.info(ExceptionStackUtil.print(e));
+            //ignore
         }
     }
 

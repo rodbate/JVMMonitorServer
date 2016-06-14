@@ -1,7 +1,7 @@
-package com.dataeye;
+package com.dataeye.server;
 
 
-import com.dataeye.common.Constant;
+import com.dataeye.server.common.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +28,7 @@ public class FileListener {
                 WatchService watcher = FileSystems.getDefault().newWatchService();
                 LOGGER.info("config path {} " + Constant.CONF_DIR);
                 Path path = Paths.get(Constant.CONF_DIR);
-                path.register(watcher, ENTRY_CREATE, ENTRY_MODIFY, ENTRY_DELETE);
+                path.register(watcher, ENTRY_CREATE, ENTRY_MODIFY);
 
                 //
                 while (true) {

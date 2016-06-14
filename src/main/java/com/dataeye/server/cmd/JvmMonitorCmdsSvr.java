@@ -1,10 +1,11 @@
-package com.dataeye.cmd;
+package com.dataeye.server.cmd;
 
-import com.dataeye.common.Client;
-import com.dataeye.common.JpsInfo;
-import com.dataeye.common.Server;
-import com.dataeye.help.ProcessUtil;
-import com.dataeye.utils.StringUtils;
+import com.dataeye.server.common.Client;
+import com.dataeye.server.common.Constant;
+import com.dataeye.server.common.JpsInfo;
+import com.dataeye.server.common.Server;
+import com.dataeye.server.help.ProcessUtil;
+import com.dataeye.server.utils.StringUtils;
 import com.google.gson.Gson;
 import com.xunlei.netty.httpserver.cmd.BaseCmd;
 import com.xunlei.netty.httpserver.cmd.CmdMapper;
@@ -29,7 +30,7 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
 
     @CmdMapper("/greys/cmds")
     public Object greysCmds(XLHttpRequest req, XLHttpResponse rsp) {
-        rsp.setHeader("Access-Control-Allow-Origin", "http://10.1.2.197:38085");
+        rsp.setHeader("Access-Control-Allow-Origin", Constant.ACROSS_DOMAIN);
         rsp.setHeader("Access-Control-Allow-Methods", "POST, GET");
         rsp.setHeader("Access-Control-Max-Age", "3600");
         rsp.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
@@ -52,7 +53,14 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
 
     @CmdMapper("/jvm/cmds")
     public Object jvmCmds(XLHttpRequest req, XLHttpResponse rsp) {
-        String cmd = "jps -mvl";
+        rsp.setHeader("Access-Control-Allow-Origin", Constant.ACROSS_DOMAIN);
+        rsp.setHeader("Access-Control-Allow-Methods", "POST, GET");
+        rsp.setHeader("Access-Control-Max-Age", "3600");
+        rsp.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        String cmd = req.getParameter("cmd");
+        if (StringUtils.isEmpty(cmd)) {
+            cmd = "jps -ml";
+        }
         try {
             Process process = ProcessUtil.process(cmd);
             InputStream in = process.getInputStream();
@@ -60,7 +68,7 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
             String line = null;
             List<JpsInfo> processList = new ArrayList<>();
             while ((line = br.readLine()) != null) {
-                if (!line.contains("jps") && !line.contains("JVMMonitorServer")) {
+                if (!line.contains("jps")) {
                     JpsInfo pro = new JpsInfo();
                     int pid = Integer.parseInt(line.substring(0, line.indexOf(" ")));
                     pro.setPid(pid);
@@ -68,6 +76,7 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
                     processList.add(pro);
                 }
             }
+            process.destroy();
             return gson.toJson(processList);
         } catch (IOException e) {
             return "cmd not exits";
@@ -75,23 +84,13 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
     }
 
     public static void main(String[] args) throws Exception {
-        String cmd = "jps -mvl";
-        Process process = ProcessUtil.process(cmd);
-        InputStream in = process.getInputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-        String line = null;
-        List<JpsInfo> processList = new ArrayList<>();
-        while ((line = br.readLine()) != null) {
-            if (!line.contains("jps") && !line.contains("JVMMonitorServer")) {
-                JpsInfo pro = new JpsInfo();
-                int pid = Integer.parseInt(line.substring(0, line.indexOf(" ")));
-                pro.setPid(pid);
-                pro.setDetail(line.substring(line.indexOf(" ")));
-                processList.add(pro);
-            }
-        }
+        Server server = Server.launchServer(1231);
+        System.out.println(server.getPort());
 
+
+        Client client = new Client(server);
+        String result = client.sendCmd("help");
+        System.out.println(result);
     }
-
 
 }

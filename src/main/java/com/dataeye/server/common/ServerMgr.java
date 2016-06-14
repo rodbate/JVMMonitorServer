@@ -1,9 +1,8 @@
-package com.dataeye.common;
+package com.dataeye.server.common;
 
 
 import com.xunlei.util.concurrent.ConcurrentHashSet;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,6 +22,7 @@ public class ServerMgr {
             portAvailable.add(i);
         }
 
+
         Thread monitor = new Thread(runnable);
         monitor.setName("Detect The Expired Server Thread");
         monitor.start();
@@ -36,7 +36,7 @@ public class ServerMgr {
     }
 
     //服务器空闲时间(idle)
-    private long DURATION_TIME = Constant.DURATION_TIME_MIN * 60 * 1000L;
+    private volatile long DURATION_TIME = Constant.DURATION_TIME_MIN * 60 * 1000L;
 
     //进程id与启动的server一一对应
     public ConcurrentMap<Integer, Server> serverPool = new ConcurrentHashMap<>();

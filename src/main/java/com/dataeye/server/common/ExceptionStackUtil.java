@@ -1,4 +1,4 @@
-package com.dataeye.common;
+package com.dataeye.server.common;
 
 
 import java.io.PrintWriter;
