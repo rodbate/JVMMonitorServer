@@ -30,10 +30,7 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
 
     @CmdMapper("/greys/cmds")
     public Object greysCmds(XLHttpRequest req, XLHttpResponse rsp) {
-        rsp.setHeader("Access-Control-Allow-Origin", Constant.ACROSS_DOMAIN);
-        rsp.setHeader("Access-Control-Allow-Methods", "POST, GET");
-        rsp.setHeader("Access-Control-Max-Age", "3600");
-        rsp.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
         String pid = req.getParameter("pid");
         String cmd = req.getParameter("cmd");
         if (StringUtils.isEmpty(pid)) {
@@ -53,14 +50,8 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
 
     @CmdMapper("/jvm/cmds")
     public Object jvmCmds(XLHttpRequest req, XLHttpResponse rsp) {
-        rsp.setHeader("Access-Control-Allow-Origin", Constant.ACROSS_DOMAIN);
-        rsp.setHeader("Access-Control-Allow-Methods", "POST, GET");
-        rsp.setHeader("Access-Control-Max-Age", "3600");
-        rsp.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-        String cmd = req.getParameter("cmd");
-        if (StringUtils.isEmpty(cmd)) {
-            cmd = "jps -ml";
-        }
+
+        String cmd = "jps -mvl";
         try {
             Process process = ProcessUtil.process(cmd);
             InputStream in = process.getInputStream();
@@ -68,7 +59,7 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
             String line = null;
             List<JpsInfo> processList = new ArrayList<>();
             while ((line = br.readLine()) != null) {
-                if (!line.contains("jps")) {
+                if (!line.contains("jps")&&!line.contains("JVMMonitorServer")) {
                     JpsInfo pro = new JpsInfo();
                     int pid = Integer.parseInt(line.substring(0, line.indexOf(" ")));
                     pro.setPid(pid);
