@@ -1,6 +1,7 @@
 package com.dataeye.server.cmd;
 
 import com.dataeye.server.common.Client;
+import com.dataeye.server.common.Constant;
 import com.dataeye.server.common.JpsInfo;
 import com.dataeye.server.common.Server;
 import com.dataeye.server.help.ProcessUtil;
@@ -29,7 +30,7 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
 
     @CmdMapper("/greys/cmds")
     public Object greysCmds(XLHttpRequest req, XLHttpResponse rsp) {
-        rsp.setHeader("Access-Control-Allow-Origin", "http://10.1.2.197:38085");
+        rsp.setHeader("Access-Control-Allow-Origin", Constant.ACROSS_DOMAIN);
         rsp.setHeader("Access-Control-Allow-Methods", "POST, GET");
         rsp.setHeader("Access-Control-Max-Age", "3600");
         rsp.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
@@ -52,7 +53,7 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
 
     @CmdMapper("/jvm/cmds")
     public Object jvmCmds(XLHttpRequest req, XLHttpResponse rsp) {
-        rsp.setHeader("Access-Control-Allow-Origin", "http://10.1.2.197:38085");
+        rsp.setHeader("Access-Control-Allow-Origin", Constant.ACROSS_DOMAIN);
         rsp.setHeader("Access-Control-Allow-Methods", "POST, GET");
         rsp.setHeader("Access-Control-Max-Age", "3600");
         rsp.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
