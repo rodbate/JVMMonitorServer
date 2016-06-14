@@ -31,7 +31,7 @@ public class Server {
     }
 
 
-    public static synchronized Server launchServer(int pid){
+    public static synchronized Server launchServer(int pid) throws JvmException{
         ServerMgr mg = ServerMgr.getInstance();
         Server server = mg.getServerByPid(pid);
 
@@ -51,7 +51,12 @@ public class Server {
         port = mgr.getPort();
     }
 
-    private void start(){
+    private void start() throws JvmException{
+
+        if (user == null || "".equals(user)) {
+            throw new JvmException("The User of the specified pid is NULL");
+        }
+
         try {
 
             String core = (String) Constant.RESOURCE_LOAD.getValue(Constant.CONF_DIR + File.separator + "jvmserver.properties", "corePath");

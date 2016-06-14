@@ -1,9 +1,6 @@
 package com.dataeye.server.cmd;
 
-import com.dataeye.server.common.Client;
-import com.dataeye.server.common.Constant;
-import com.dataeye.server.common.JpsInfo;
-import com.dataeye.server.common.Server;
+import com.dataeye.server.common.*;
 import com.dataeye.server.help.ProcessUtil;
 import com.dataeye.server.utils.StringUtils;
 import com.google.gson.Gson;
@@ -41,10 +38,16 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
             return "cmd is empty";
         }
 
-        Server server = Server.launchServer(Integer.valueOf(pid));
-        System.out.println(server.getPort());
-        Client client = new Client(server);
-        String result = client.sendCmd(cmd);
+        String result;
+
+        try {
+            Server server = Server.launchServer(Integer.valueOf(pid));
+            System.out.println(server.getPort());
+            Client client = new Client(server);
+            result = client.sendCmd(cmd);
+        } catch (JvmException e) {
+            result = e.getMessage();
+        }
         return result;
     }
 
