@@ -24,7 +24,7 @@ public class CommonUtil {
     //根据pid获取用户
     public static String getUserByPid(String pid){
 
-        String cmd = "ps -ef|grep "+ pid +"|grep -v grep|awk '{print $1}'";
+        String cmd = "ps -ef|grep -w "+ pid +"|grep -v grep|awk '{print $1}'";
         try {
             Process process = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", cmd});
             process.waitFor();
