@@ -77,7 +77,7 @@ public class GreysConsole {
         activeConsoleReader();
 
 
-        socketWriter.write("version\n");
+        socketWriter.write("trace com.dataeye.disconf.demo.TestGreys test\n");
         socketWriter.flush();
 
         loopForWriter();
@@ -296,7 +296,7 @@ public class GreysConsole {
     }
 
     public static void main(String... args) throws IOException {
-        new GreysConsole(new InetSocketAddress(args[0], Integer.valueOf(args[1])));
+        new GreysConsole(new InetSocketAddress("127.0.0.1", 8385));
     }
 
 }

@@ -33,6 +33,7 @@ import java.util.WeakHashMap;
 import static com.dataeye.core.util.GaCheckUtils.isEquals;
 import static com.dataeye.core.util.GaReflectUtils.defineClass;
 import static java.lang.System.arraycopy;
+import static java.lang.System.setOut;
 import static org.apache.commons.io.FileUtils.writeByteArrayToFile;
 import static org.apache.commons.io.IOUtils.toByteArray;
 import static org.apache.commons.lang3.reflect.FieldUtils.getField;
@@ -346,7 +347,8 @@ public class Enhancer implements ClassFileTransformer {
      * 原因很简单，因为Spy被派遣到对方的ClassLoader中去了
      */
     private static boolean isGreysClass(Class<?> clazz) {
-        return StringUtils.startsWith(clazz.getCanonicalName(), "com.dataeye.");
+        return StringUtils.startsWith(clazz.getCanonicalName(), "com.dataeye.core")
+                || StringUtils.startsWith(clazz.getCanonicalName(), "com.dataeye.agent");
     }
 
     private static Map<Class<?>, Matcher<AsmMethod>> toEnhanceMap(final PointCut pointCut) {
@@ -355,7 +357,6 @@ public class Enhancer implements ClassFileTransformer {
         final Collection<Class<?>> classes = pointCut.isIncludeSubClass()
                 ? reflectManager.searchClassWithSubClass(pointCut.getClassMatcher())
                 : reflectManager.searchClass(pointCut.getClassMatcher());
-
 
         for (final Class<?> clazz : classes) {
 

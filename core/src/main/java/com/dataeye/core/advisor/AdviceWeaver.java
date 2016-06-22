@@ -152,6 +152,8 @@ public class AdviceWeaver extends ClassVisitor implements Opcodes {
             ClassLoader loader, String className, String methodName, String methodDesc,
             Object target, Object[] args) {
 
+        System.out.println("=========methodOnBegin===========");
+
         if (isSelfCallRef.get()) {
             return;
         } else {
@@ -191,6 +193,8 @@ public class AdviceWeaver extends ClassVisitor implements Opcodes {
      *                     若目标为静态方法,则为null
      */
     public static void methodOnReturnEnd(Object returnObject) {
+        System.out.println("=========methodOnReturnEnd===========");
+
         methodOnEnd(false, returnObject);
     }
 
@@ -212,6 +216,7 @@ public class AdviceWeaver extends ClassVisitor implements Opcodes {
      */
     private static void methodOnEnd(boolean isThrowing, Object returnOrThrowable) {
 
+        System.out.println("--========methodOnEnd========--");
         if (isSelfCallRef.get()) {
             return;
         } else {

@@ -76,15 +76,15 @@ public class ThreadTopCpuCommand implements Command {
                     messages = messages.subList(0, number);
 
                     final TTable tTable = new TTable(new TTable.ColumnDefine[]{
-                            new TTable.ColumnDefine(TTable.Align.MIDDLE),
-                            new TTable.ColumnDefine(TTable.Align.MIDDLE),
-                            new TTable.ColumnDefine(TTable.Align.LEFT),
-                            new TTable.ColumnDefine(TTable.Align.MIDDLE)
-                    }).addRow("\nThread ID\n", "\nThread Name\n", "\nThread Stack Info\n", "\nCPU USE TIME(ms)\n").padding(1);
+                            new TTable.ColumnDefine(10,true,TTable.Align.MIDDLE),
+                            new TTable.ColumnDefine(50,true,TTable.Align.MIDDLE),
+                            new TTable.ColumnDefine(50,false,TTable.Align.LEFT),
+                            new TTable.ColumnDefine(50,true,TTable.Align.MIDDLE)
+                    }).addRow("Thread ID", "Thread Name", "Thread Stack Info", "CPU USE TIME(ms)");
 
                     for (WrappedMessage mess : messages) {
-                        tTable.addRow("\n" + mess.getId() + "\n", "\n" + mess.getName() + "\n",
-                                 mess.getStackInfo(), "\n" + mess.getCpuTime() + "\n");
+                        tTable.addRow(mess.getId(), mess.getName(),
+                                mess.getStackInfo(), mess.getCpuTime());
                     }
 
                     printer.print(tTable.rendering()).finish();
@@ -224,14 +224,27 @@ public class ThreadTopCpuCommand implements Command {
     }
 
 
-    /*public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
 
         List<WrappedMessage> wrappedMessage = new ThreadTopCpuCommand().getWrappedMessage(20);
 
+        wrappedMessage = wrappedMessage.subList(0, 5);
+
+        final TTable tTable = new TTable(new TTable.ColumnDefine[]{
+                new TTable.ColumnDefine(10,true,TTable.Align.MIDDLE),
+                new TTable.ColumnDefine(50,true,TTable.Align.MIDDLE),
+                new TTable.ColumnDefine(50,false,TTable.Align.LEFT),
+                new TTable.ColumnDefine(50,true,TTable.Align.MIDDLE)
+        }).addRow("Thread ID", "Thread Name", "Thread Stack Info", "CPU USE TIME(ms)");
+
         for (WrappedMessage mess : wrappedMessage) {
-            System.out.println(mess.toString());
+            tTable.addRow(mess.getId(), mess.getName(),
+                    mess.getStackInfo(), mess.getCpuTime());
         }
 
+        System.out.println(tTable.rendering());
+
+
         Thread.sleep(1000 * 1000);
-    }*/
+    }
 }

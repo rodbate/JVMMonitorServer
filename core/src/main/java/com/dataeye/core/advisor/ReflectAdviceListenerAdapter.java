@@ -193,6 +193,8 @@ public abstract class ReflectAdviceListenerAdapter<PC extends ProcessContext, IC
             ClassLoader loader, String className, String methodName, String methodDesc,
             Object target, Object[] args, Object returnObject) throws Throwable {
 
+
+        System.out.println("============afterReturning=============");
         final ProcessContextBound bound = processContextBoundRef.get();
         final PC processContext = bound.processContext;
         final GaStack<IC> innerContextGaStack = bound.innerContextGaStack;

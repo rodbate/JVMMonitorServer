@@ -55,8 +55,6 @@ public class ServerMgr {
             while (true) {
 
                 for (final Map.Entry<Integer, Server> entry : serverPool.entrySet()) {
-                    //LOGGER.info(server.getPid() + " " + server.getPort());
-                    //System.out.println(server.getPid() + " " + server.getPort());
 
                     final Server server = entry.getValue();
 

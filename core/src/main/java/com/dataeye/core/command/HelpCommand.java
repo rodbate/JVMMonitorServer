@@ -214,4 +214,8 @@ public class HelpCommand implements Command {
         return tTable.padding(1).rendering();
     }
 
+    public static void main(String[] args) {
+        System.out.println(new HelpCommand().mainHelp());
+    }
+
 }

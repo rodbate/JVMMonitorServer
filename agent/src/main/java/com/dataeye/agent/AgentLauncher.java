@@ -15,12 +15,10 @@ public class AgentLauncher {
     private static volatile ClassLoader greysClassLoader;
 
     public static void premain(String args, Instrumentation inst) {
-        System.out.println("==========================");
         main(args, inst);
     }
 
     public static void agentmain(String args, Instrumentation inst) {
-        System.out.println("==========================");
         main(args, inst);
     }
 

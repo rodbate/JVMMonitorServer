@@ -15,7 +15,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
  * 恢复所有增强类<br/>
  * Created by oldmanpushcart@gmail.com on 15/5/29.
  */
-@Cmd(name = "reset", sort = 11, summary = "Reset all the enhanced classes",
+@Cmd(isHacking = true, name = "reset", sort = 11, summary = "Reset all the enhanced classes",
         eg = {
                 "reset",
                 "reset *List",

@@ -16,7 +16,7 @@ import static com.dataeye.core.util.GaStringUtils.getLogo;
  *
  * @author oldmanpushcart@gmail.com
  */
-@Cmd(name = "version", sort = 9, summary = "Display Greys version",
+@Cmd(isHacking = true, name = "version", sort = 9, summary = "Display Greys version",
         eg = {
                 "version"
         })

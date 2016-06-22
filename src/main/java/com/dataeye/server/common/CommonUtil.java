@@ -146,4 +146,32 @@ public class CommonUtil {
 
         return flag;
     }
+
+
+    private static String[] watCmdArr = new String[]{"monitor", "trace", "js", "ptrace", "stack"};
+    public static boolean isWaitToStopCommand(String command) {
+        for (String s : watCmdArr) {
+            if (command.startsWith(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    private static String[] returnCmd = new String[]{"sc","sm","jvm","version","quit","session","reset","asm","help","tt","topthread"};
+    public static boolean isReturnImmediatelyCmd(String command) {
+        for (String s : returnCmd) {
+            if (command.startsWith(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isReturnImmediatelyCmd(("version" + "\n")));
+
+        System.out.println(("version" + "\n").startsWith("version"));
+    }
 }

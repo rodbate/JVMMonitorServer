@@ -80,6 +80,7 @@ public class TraceCommand implements Command {
 
             @Override
             public GetEnhancer action(Session session, Instrumentation inst, final Printer printer) throws Throwable {
+
                 return new GetEnhancer() {
 
                     @Override
@@ -205,6 +206,8 @@ public class TraceCommand implements Command {
                                 final long cost = innerContext.getCost();
                                 if (isInCondition(advice, cost)) {
                                     final Entity entity = innerContext.entity;
+                                    System.out.println(entity.tTree.rendering());
+
                                     printer.println(entity.tTree.rendering());
                                     if (isOverThreshold(timesRef.incrementAndGet())) {
                                         printer.finish();

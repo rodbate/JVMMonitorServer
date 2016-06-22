@@ -51,7 +51,7 @@ public class Server {
         port = mgr.getPort();
     }
 
-    private void start() throws JvmException{
+    public void start() throws JvmException{
 
         if (user == null || "".equals(user)) {
             throw new JvmException("The User of the specified pid is NULL");

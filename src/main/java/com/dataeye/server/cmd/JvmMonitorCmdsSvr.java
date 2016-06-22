@@ -78,9 +78,8 @@ public class JvmMonitorCmdsSvr extends BaseCmd {
     }
 
     public static void main(String[] args) throws Exception {
-        Server server = Server.launchServer(1231);
+        Server server = Server.launchServer(8776);
         System.out.println(server.getPort());
-
 
         Client client = new Client(server);
         String result = client.sendCmd("help");

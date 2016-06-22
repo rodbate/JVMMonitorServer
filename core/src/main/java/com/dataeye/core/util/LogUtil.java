@@ -26,7 +26,7 @@ public class LogUtil {
         } catch (JoranException e) {
             throw new RuntimeException("load logback config failed, you need restart greys", e);
         } finally {
-            logger = LoggerFactory.getLogger("greys-anatomy");
+            logger = LoggerFactory.getLogger("greys_log");
         }
 
     }
