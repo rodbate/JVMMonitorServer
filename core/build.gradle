@@ -3,8 +3,8 @@ version '1.0'
 
 apply plugin: 'java'
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -23,15 +23,13 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'org.slf4j:slf4j-api:1.7.5'
     compile 'ch.qos.logback:logback-classic:1.0.7'
-    compile 'ch.qos.logback:logback-core:1.0.7'
-    compile 'ch.qos.logback:logback-access:1.0.7'
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
 task fatJar(type: Jar) {
 
     manifest {
-        attributes( "Main-Class" : "com.dataeye.core.GreysLauncher")
+        attributes( "Main-Class" : "com.rodbate.core.GreysLauncher")
     }
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
@@ -43,4 +41,10 @@ gradle.projectsEvaluated {
     }
 }
 
-compileJava.options.encoding = 'UTF-8'
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Javadoc) {
+    options.encoding = 'UTF-8'
+}
