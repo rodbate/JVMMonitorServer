@@ -4,10 +4,6 @@ jdk:
 branches:
   only:
     - master
-
-before_install: 'gradle -version'
-install: 'gradle build'
-script: 'gradle check'
-
+    
 after_success:
-- mvn clean cobertura:cobertura coveralls:report
+  - ./gradlew cobertura coveralls
