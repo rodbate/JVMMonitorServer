@@ -4,7 +4,6 @@ build/
 .gradle/
 src/main/java/nio
 data.txt
-/build.gradle
 logs/
 /classes/
 /agent/build/

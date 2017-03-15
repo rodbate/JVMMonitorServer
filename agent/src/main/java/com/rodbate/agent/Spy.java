@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 /**
  * 间谍类<br/>
  * 藏匿在各个ClassLoader中
- * Created by oldmanpushcart@gmail.com on 15/8/23.
  */
 public class Spy {
 

@@ -7,7 +7,6 @@ import java.util.jar.JarFile;
 
 /**
  * 代理启动类
- * Created by oldmanpushcart@gmail.com on 15/5/19.
  */
 public class AgentLauncher {
 
