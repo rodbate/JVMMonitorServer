@@ -6,4 +6,4 @@ branches:
     - master
     
 after_success:
-  - ./gradlew cobertura coveralls
+  - gradle cobertura coveralls
