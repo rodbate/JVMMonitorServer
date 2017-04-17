@@ -49,7 +49,7 @@ gradle.projectsEvaluated {
 task fatJar(type: Jar) {
 
     manifest {
-        attributes( "Main-Class" : "com.dataeye.server.Launcher")
+        attributes( "Main-Class" : "com.rodbate.server.Launcher")
     }
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
