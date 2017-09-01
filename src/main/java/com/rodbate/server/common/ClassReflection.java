@@ -78,7 +78,7 @@ public class ClassReflection {
 
 
     public static Set<Class<?>> getClassFilterByAnnotation(Class<? extends Annotation> clazz) {
-        Set<Class<?>> classes = getClassFromPackage(null, "com.dataeye.server");
+        Set<Class<?>> classes = getClassFromPackage(null, "com.rodbate.server");
 
         Set<Class<?>> ret = new HashSet<>();
 
